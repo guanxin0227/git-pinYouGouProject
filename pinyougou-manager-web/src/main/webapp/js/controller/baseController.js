@@ -1,29 +1,7 @@
-/**
- * 抽取公共controller
- */
-app.controller('baseController',function ($scope) {
-    //定义一个searchEntity对象，防止空指针
+app.controller("baseController",function($scope){
+
+    //条件查询对象定义
     $scope.searchEntity={};
-
-    //定义一个集合存储当前选中的id
-    $scope.selectIds=[];
-
-    //给复选框一个点击事件，如果是勾选，则将勾选的ID加入到$scope.selectIds=[]。
-    //				    如果是取消勾选，则将该ID从$scope.selectIds=[]移除。
-    $scope.updateSelection=function ($event,id) {
-        //如果是勾选，则将勾选的ID加入到$scope.selectIds=[]。
-        if($event.target.checked){
-            //往集合中添加数据使用push
-            $scope.selectIds.push(id);
-        }else{
-            //获取ID在集合中的下标
-            var index = $scope.selectIds.indexOf(id);
-
-            //移除对应下标的数据,splice表示将集合中的对应下标数据移除一次
-            $scope.selectIds.splice(index,1);
-        }
-        console.log($scope.selectIds);
-    }
 
     /***
      * 分页控件配置
@@ -39,8 +17,48 @@ app.controller('baseController',function ($scope) {
         itemsPerPage: 10,
         perPageOptions: [10, 20, 30, 40, 50],
         onChange: function(){
-            //监控paginationConf参数的变化:当分页参数发生变化，我们可以执行分页查询
-            $scope.getPage($scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage);
+            $scope.reloadList();//重新加载
         }
     };
+
+    //定义一个变量，用于存储要删除的品牌ID
+    $scope.selectids=[];
+    //判断当前点击是否要删除对应品牌
+    $scope.updateSelection=function($event,id){
+        //判断当前操作是否是选中复选框
+        if($event.target.checked){
+            //如果选中复选框，则将该id增加到数组中去
+            $scope.selectids.push(id);
+        }else{
+            //取消删除，则从数组中移除该id
+            var idx = $scope.selectids.indexOf(id);   //获取id对应的下标
+            $scope.selectids.splice(idx, 1);//删除对应下标的数据，1表示删除的数量
+        }
+    }
+
+    //重新加载
+    $scope.reloadList=function(){
+        $scope.getPage($scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage);
+    }
+
+
+    //将JSON字符数据提取拼接一个字符串
+    $scope.json2str=function (jsonstr,key) {
+        //将字符转JSON
+        var json = JSON.parse(jsonstr);
+
+        //拼接的结果
+        var result="";
+
+        //循环提取
+        for(var i=0;i<json.length;i++){
+            if(i>0){
+                result+=",";
+            }
+            //result+=json[i]['text'];
+            result+=json[i][key];
+        }
+
+        return result;
+    }
 });

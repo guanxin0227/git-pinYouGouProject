@@ -2,15 +2,15 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("brandController",function($scope,$http,$controller,brandService){
+app.controller("seckillGoodsController",function($scope,$http,$controller,seckillGoodsService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
 
-    //获取所有的Brand信息
+    //获取所有的SeckillGoods信息
     $scope.getPage=function(page,size){
         //发送请求获取数据
-        brandService.findAll(page,size,$scope.searchEntity).success(function(response){
+        seckillGoodsService.findAll(page,size,$scope.searchEntity).success(function(response){
             //集合数据
             $scope.list = response.list;
             //分页数据
@@ -23,10 +23,10 @@ app.controller("brandController",function($scope,$http,$controller,brandService)
         var result = null;
         if($scope.entity.id!=null){
             //执行修改数据
-            result = brandService.update($scope.entity);
+            result = seckillGoodsService.update($scope.entity);
         }else{
             //增加操作
-            result = brandService.add($scope.entity);
+            result = seckillGoodsService.add($scope.entity);
         }
         //判断操作流程
         result.success(function(response){
@@ -43,7 +43,7 @@ app.controller("brandController",function($scope,$http,$controller,brandService)
 
     //根据ID查询信息
     $scope.getById=function(id){
-        brandService.findOne(id).success(function(response){
+        seckillGoodsService.findOne(id).success(function(response){
             //将后台的数据绑定到前台
             $scope.entity=response;
         });
@@ -51,7 +51,7 @@ app.controller("brandController",function($scope,$http,$controller,brandService)
 
     //批量删除
     $scope.delete=function(){
-        brandService.delete($scope.selectids).success(function(response){
+        seckillGoodsService.delete($scope.selectids).success(function(response){
             //判断删除状态
             if(response.success){
                 $scope.reloadList();
