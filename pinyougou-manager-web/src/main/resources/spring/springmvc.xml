@@ -55,5 +55,5 @@
 
     <!-- 包扫描 -->
     <context:component-scan base-package="com.pinyougou.manager.controller" />
-
+    <import resource="spring-security.xml"></import>
 </beans>

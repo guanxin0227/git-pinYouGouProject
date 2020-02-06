@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+        <!--指定无需授权访问的路径-->
+        <http pattern="/login.html" security="none" />
+        <http pattern="/login_error.html" security="none" />
+        <http pattern="/css/**" security="none" />
+        <http pattern="/img/**" security="none" />
+        <http pattern="/js/**" security="none" />
+        <http pattern="/plugins/**" security="none" />
+
+        <!-- use-expressions:是否启用SPEL表达式-->
+        <http use-expressions="false">
+
+            <!--pattern:路径拦截    access:表示能访问的角色-->
+            <intercept-url pattern="/**" access="ROLE_ADMIN" />
+
+            <!--
+                启用登录
+                login-page:指定登录的页面
+                default-target-url:登录成功后默认页
+                authentication-failure-url:登录失败后跳转的页面
+              -->
+            <form-login login-page="/login.html" default-target-url="/admin/index.html" authentication-failure-url="/login_error.html" always-use-default-target="true"/>
+
+            <!--关闭CSRF安全校验-->
+            <csrf disabled="true" />
+
+            <!--是否允许同源请求在指定的iframe显示-->
+            <headers>
+                <frame-options policy="SAMEORIGIN"/>
+            </headers>
+        </http>
+
+        <!--授权认证管理器-->
+        <authentication-manager>
+            <authentication-provider>
+                <user-service>
+                    <!--定义一个用户，并指定角色为ROLE_ADMIN，密码为123456-->
+                    <user name="admin" authorities="ROLE_ADMIN" password="1111" />
+                </user-service>
+            </authentication-provider>
+        </authentication-manager>
+</beans:beans>
