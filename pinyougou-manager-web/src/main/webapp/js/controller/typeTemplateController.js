@@ -25,7 +25,7 @@ app.controller("typeTemplateController",function($scope,$http,$controller,typeTe
 
 
     //创建一个集合，用于存储扩展属性
-    $scope.entity={customAttributeItems:[]};
+    //$scope.entity={customAttributeItems:[]};
 
     //增加数据的方法
     $scope.addTableRow=function () {
