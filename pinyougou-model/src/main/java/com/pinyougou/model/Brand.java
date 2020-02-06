@@ -8,6 +8,9 @@ import java.io.Serializable;
  */
 @Table(name = "tb_brand")
 public class Brand implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //获取主键自增值
     @Column(name = "id")
@@ -25,7 +28,12 @@ public class Brand implements Serializable {
     @Column(name = "first_char")
     private String firstChar;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * @return name 使用Text
+     */
+    public String getText() {
+        return name;
+    }
 
     /**
      * @return id

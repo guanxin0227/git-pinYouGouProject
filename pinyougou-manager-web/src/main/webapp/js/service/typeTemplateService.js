@@ -9,6 +9,10 @@ app.service("typeTemplateService",function($http){
         return $http.post("/typeTemplate/list.shtml?page="+page+"&size="+size,searchEntity);
     }
 
+    this.findBrandList=function(){
+        return $http.get("/brand/list.shtml");
+    }
+
     //增加TypeTemplate
     this.add=function(entity){
         return $http.post("/typeTemplate/add.shtml",entity);
