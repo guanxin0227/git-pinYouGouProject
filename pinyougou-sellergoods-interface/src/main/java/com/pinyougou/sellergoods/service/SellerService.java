@@ -31,7 +31,7 @@ public interface SellerService {
      * @param id
      * @return
      */
-    Seller getOneById(Long id);
+    Seller getOneById(String id);
 
     /***
      * 根据ID修改Seller信息

@@ -2,6 +2,7 @@ package com.pinyougou.sellergoods.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.http.ShopStatus;
 import com.pinyougou.mapper.SellerMapper;
 import com.pinyougou.model.Seller;
 import com.pinyougou.sellergoods.service.SellerService;
@@ -54,7 +55,7 @@ public class SellerServiceImpl implements SellerService {
      */
     @Override
     public int add(Seller seller) {
-        seller.setStatus("0");
+        seller.setStatus(ShopStatus.NO_EXAMINE);
         seller.setCreateTime(new Date());
         return sellerMapper.insertSelective(seller);
     }
@@ -66,7 +67,7 @@ public class SellerServiceImpl implements SellerService {
      * @return
      */
     @Override
-    public Seller getOneById(Long id) {
+    public Seller getOneById(String id) {
         return sellerMapper.selectByPrimaryKey(id);
     }
 
