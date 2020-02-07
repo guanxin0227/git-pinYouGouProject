@@ -29,7 +29,7 @@
         <form-login
                 login-page="/shoplogin.html"
                 default-target-url="/admin/index.html"
-                authentication-failure-url="/login.html"
+                authentication-failure-url="/shoplogin_error.html"
                 always-use-default-target="true"/>
 
         <!--开启登出功能-->
@@ -49,11 +49,12 @@
 
     <!--授权认证管理器-->
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <!--定义一个用户，并指定角色为ROLE_ADMIN，密码为123456-->
-                <user name="admin" authorities="ROLE_SELLER" password="1111" />
-            </user-service>
+        <!--使用自定义的认证类来认证用户信息-->
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+
         </authentication-provider>
     </authentication-manager>
+
+    <!--自定义认证类-->
+    <beans:bean class="com.pinyougou.shop.service.UserDetailsServiceImpl" id="userDetailsServiceImpl" />
 </beans:beans>

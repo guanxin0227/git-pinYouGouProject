@@ -61,7 +61,7 @@ public class SellerController {
      * @return
      */
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Seller getById(@PathVariable(value = "id")long id){
+    public Seller getById(@PathVariable(value = "id")String id){
         //根据ID查询Seller信息
         Seller seller = sellerService.getOneById(id);
         return seller;
