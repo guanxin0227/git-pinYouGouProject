@@ -8,7 +8,6 @@
     <title>运营商后台管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-  
 
     <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/plugins/adminLTE/css/AdminLTE.css">
@@ -16,7 +15,7 @@
     <link rel="stylesheet" href="/css/style.css">
     
     <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
-    <script src="/plugins/jQueryUI/jquery-ui.min.js"></script>
+<!--    <script src="/plugins/jQueryUI/jquery-ui.min.js"></script>-->
     <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
   
     <script src="/plugins/adminLTE/js/app.min.js"></script>
@@ -29,11 +28,27 @@
 			  }
 		 }
     
-	</script>    
+	</script>
+
+    <!--引入js-->
+    <script src="/plugins/angularjs/angular.min.js"></script>
+
+    <!--分页插件引入-->
+    <script src="/plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="/plugins/angularjs/pagination.css">
+
+    <!--引入公共angularjs模块-->
+    <script src="/js/base_pagination.js"></script>
+    <!--引入js 公共controller-->
+    <script src="/js/controller/baseController.js"></script>
+    <!--引入js controller-->
+    <script src="/js/controller/loginController.js"></script>
+    <!--引入js service-->
+    <script src="/js/service/loginService.js"></script>
  
 </head>
 
-<body class="hold-transition skin-green sidebar-mini" >
+<body ng-app="pinyougou" ng-controller="loginController" ng-init="getUserName()" class="hold-transition skin-green sidebar-mini" >
 
     <div class="wrapper">
 
@@ -256,7 +271,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">测试用户</span>
+                                <span class="hidden-xs">{{userLoginName}}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -264,7 +279,7 @@
                                     <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
-                                       测试用户 
+                                        {{userLoginName}}
                                         <small>最后登录 11:20AM</small>
                                     </p>
                                 </li>
@@ -297,7 +312,7 @@
                         <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p> 测试用户</p>
+                        <p> {{userLoginName}}</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
                     </div>
                 </div>
