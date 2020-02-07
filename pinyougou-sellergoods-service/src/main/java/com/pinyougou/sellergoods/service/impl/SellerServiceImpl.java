@@ -98,4 +98,18 @@ public class SellerServiceImpl implements SellerService {
         criteria.andIn("id",ids);
         return sellerMapper.deleteByExample(example);
     }
+
+    /***
+     * 根据ID修改Seller状态信息
+     * @param id
+     * @param status
+     * @return
+     */
+    @Override
+    public int updateStatus(String id, String status) {
+        Seller seller = new Seller();
+        seller.setSellerId(id);
+        seller.setStatus(status);
+        return sellerMapper.updateByPrimaryKeySelective(seller);
+    }
 }

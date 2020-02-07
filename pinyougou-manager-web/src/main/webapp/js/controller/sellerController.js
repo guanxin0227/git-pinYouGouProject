@@ -54,10 +54,22 @@ app.controller("sellerController",function($scope,$http,$controller,sellerServic
         sellerService.delete($scope.selectids).success(function(response){
             //判断删除状态
             if(response.success){
+                //重新加载新的数据
                 $scope.reloadList();
             }else{
                 alert(response.message);
             }
         });
+    }
+
+    //审核商家，更改商家审核状态
+    $scope.updateStatus=function (sellerId,status) {
+        sellerService.updateStatusInfo(sellerId,status).success(function (response) {
+            if(response.success){
+                $scope.reloadList();
+            }else{
+                alert(response.message);
+            }
+        })
     }
 });

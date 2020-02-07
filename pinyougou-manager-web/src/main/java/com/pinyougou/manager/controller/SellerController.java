@@ -117,4 +117,23 @@ public class SellerController {
     public List<Seller> list() {
         return sellerService.getAll();
     }
+
+
+    /***
+     * 商家状态审核
+     * 获取JSON数据
+     * @return
+     */
+    @RequestMapping(value = "/status/{id}/{status}")
+    public Result updateStatus(@PathVariable(value = "id") String id,@PathVariable(value = "status") String status) {
+        try {
+            int i = sellerService.updateStatus(id, status);
+            if(i>0){
+                return new Result(true,"审核成功");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Result(false,"审核失败");
+    }
 }

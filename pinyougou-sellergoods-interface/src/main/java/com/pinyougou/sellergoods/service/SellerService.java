@@ -46,4 +46,11 @@ public interface SellerService {
      * @return
      */
     int deleteByIds(List<Long> ids);
+
+    /***
+     * 审核状态修改
+     * @param id
+     * @return
+     */
+    int updateStatus(String id,String status);
 }

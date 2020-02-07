@@ -29,4 +29,9 @@ app.service("sellerService",function($http){
         return $http.post("/seller/delete.shtml",ids);
     }
 
+    //审核商家
+    this.updateStatusInfo=function (sellerId,status) {
+        return $http.post("/seller/status/" + sellerId + "/" + status + ".shtml");
+    }
+
 });

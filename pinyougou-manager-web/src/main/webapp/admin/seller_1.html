@@ -218,9 +218,9 @@
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">审核通过</button>
-         	<button class="btn btn-danger"  data-dismiss="modal" aria-hidden="true">审核未通过</button>
-            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">关闭商家</button>
+			<button class="btn btn-success" ng-click="updateStatus(entity.sellerId,'1')" data-dismiss="modal" aria-hidden="true">审核通过</button>
+         	<button class="btn btn-danger" ng-click="updateStatus(entity.sellerId,'2')" data-dismiss="modal" aria-hidden="true">审核未通过</button>
+            <button class="btn btn-danger" ng-click="updateStatus(entity.sellerId,'3')" data-dismiss="modal" aria-hidden="true">关闭商家</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>
