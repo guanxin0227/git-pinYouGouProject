@@ -33,7 +33,7 @@
                 always-use-default-target="true"/>
 
         <!--开启登出功能-->
-        <logout logout-success-url="/login.html" logout-url="/logout"/>
+        <logout logout-success-url="/shoplogin.html" logout-url="/logout"/>
 
         <!--关闭CSRF安全校验-->
         <csrf disabled="true" />
