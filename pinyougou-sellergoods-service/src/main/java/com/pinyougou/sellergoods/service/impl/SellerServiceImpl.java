@@ -8,6 +8,8 @@ import com.pinyougou.sellergoods.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,6 +54,8 @@ public class SellerServiceImpl implements SellerService {
      */
     @Override
     public int add(Seller seller) {
+        seller.setStatus("0");
+        seller.setCreateTime(new Date());
         return sellerMapper.insertSelective(seller);
     }
 
