@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.pinyougou.http.Result;
 import com.pinyougou.model.Seller;
 import com.pinyougou.sellergoods.service.SellerService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,6 +81,10 @@ public class SellerController {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Result add(@RequestBody Seller seller){
         try {
+            //密码加密
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            seller.setPassword(bCryptPasswordEncoder.encode(seller.getPassword()));
+
             //执行增加
             int acount = sellerService.add(seller);
 

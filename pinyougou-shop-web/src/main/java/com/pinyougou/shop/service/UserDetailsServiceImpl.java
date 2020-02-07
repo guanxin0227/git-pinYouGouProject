@@ -1,6 +1,7 @@
 package com.pinyougou.shop.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.pinyougou.http.ShopStatus;
 import com.pinyougou.model.Seller;
 import com.pinyougou.sellergoods.service.SellerService;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +39,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         //在数据库中查询数据
         Seller seller = sellerService.getOneById(name);
+        if(null == seller){
+            return null;
+        }
+        if(!seller.getStatus().equals(ShopStatus.YES_EXAMINE)){
+            return null;
+        }
         return new User(name,seller.getPassword(),granteds);
     }
 }

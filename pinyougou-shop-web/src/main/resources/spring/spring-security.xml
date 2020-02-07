@@ -51,10 +51,12 @@
     <authentication-manager>
         <!--使用自定义的认证类来认证用户信息-->
         <authentication-provider user-service-ref="userDetailsServiceImpl">
-
+            <password-encoder ref="bcryptEncoder"></password-encoder>
         </authentication-provider>
     </authentication-manager>
 
     <!--自定义认证类-->
     <beans:bean class="com.pinyougou.shop.service.UserDetailsServiceImpl" id="userDetailsServiceImpl" />
+    <!--加密对象-->
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans:beans>
