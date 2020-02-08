@@ -7,6 +7,26 @@ app.controller("itemCatController",function($scope,$http,$controller,itemCatServ
     //继承父控制器
     $controller("baseController",{$scope:$scope});
 
+    //定义3个变量，保存面包屑显示
+    $scope.entity_1={"name":"顶级分类","id":0};
+    $scope.entity_2=null;
+    $scope.entity_3=null;
+
+    //定义一个参数，记录当前属于第几级分类，用于控制商品分类级数
+    $scope.grand=1;
+    //定义一个方法，每调用grand一次，+1
+    $scope.loadChild=function(itemCat){
+        $scope.grand+=1;
+
+        if($scope.grand == 2){
+            //当分类等级为2级时候，把itemCat赋值给面包屑
+            $scope.entity_2=itemCat;
+        }else if($scope.grand == 3){
+            //当分类等级为3级时候，把itemCat赋值给面包屑
+            $scope.entity_3=itemCat;
+        }
+    }
+
     //获取所有的ItemCat信息
     $scope.getPage=function(page,size){
         //发送请求获取数据
