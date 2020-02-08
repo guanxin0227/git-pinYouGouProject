@@ -2,8 +2,10 @@ package com.pinyougou.shop.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.http.Result;
+import com.pinyougou.http.ShopStatus;
 import com.pinyougou.model.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,6 +82,13 @@ public class GoodsController {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Result add(@RequestBody Goods goods){
         try {
+
+            //获取商家登录信息
+            String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+            goods.setSellerId(sellerId);
+            //设置商品审批状态
+            goods.setAuditStatus(ShopStatus.NO_EXAMINE);
+
             //执行增加
             int acount = goodsService.add(goods);
 

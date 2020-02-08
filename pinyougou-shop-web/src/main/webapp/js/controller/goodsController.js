@@ -20,6 +20,10 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
 
     //添加或者修改方法
     $scope.save = function(){
+
+        //文本编辑器对象.html()  表示获取文本编辑器内容
+        $scope.entity.goodsDesc.introduction = editor.html();
+
         var result = null;
         if($scope.entity.id!=null){
             //执行修改数据
@@ -33,7 +37,9 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
             //判断执行状态
             if(response.success){
                 //重新加载新的数据
-                $scope.reloadList();
+                //$scope.reloadList();
+                $scope.entity={};
+                editor.html("");
             }else{
                 //打印错误消息
                 alert(response.message);

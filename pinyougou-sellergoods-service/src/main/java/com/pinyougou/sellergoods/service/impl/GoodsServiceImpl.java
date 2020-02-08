@@ -2,8 +2,10 @@ package com.pinyougou.sellergoods.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.mapper.GoodsDescMapper;
 import com.pinyougou.mapper.GoodsMapper;
 import com.pinyougou.model.Goods;
+import com.pinyougou.model.GoodsDesc;
 import com.pinyougou.sellergoods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private GoodsDescMapper goodsDescMapper;
 
 	/**
 	 * 返回Goods全部列表
@@ -52,7 +56,17 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public int add(Goods goods) {
-        return goodsMapper.insertSelective(goods);
+
+        //增加goods表
+        int aumont = goodsMapper.insertSelective(goods);
+
+        //增加goodsDesc表
+        //@GeneratedValue(strategy = GenerationType.IDENTITY) 用于获取主键自增值
+        GoodsDesc goodsDesc = goods.getGoodsDesc();
+        goodsDesc.setGoodsId(goods.getId());
+        goodsDescMapper.insertSelective(goodsDesc);
+
+        return aumont;
     }
 
 

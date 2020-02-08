@@ -1,17 +1,28 @@
 package com.pinyougou.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Table(name = "tb_goods")
 public class Goods implements Serializable {
+
+    /**
+     * 与tb_goodsDesc表一对一关系
+     */
+    private GoodsDesc goodsDesc;
+
+    /**
+     * 与tb_item表一对多关系
+     */
+    private List<Item> items;
+
     /**
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -393,5 +404,21 @@ public class Goods implements Serializable {
      */
     public void setIsDelete(String isDelete) {
         this.isDelete = isDelete == null ? null : isDelete.trim();
+    }
+
+    public GoodsDesc getGoodsDesc() {
+        return goodsDesc;
+    }
+
+    public void setGoodsDesc(GoodsDesc goodsDesc) {
+        this.goodsDesc = goodsDesc;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

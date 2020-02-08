@@ -9,25 +9,37 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
   
-    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
-    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="/plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+	<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
     
     <!-- 富文本编辑器 -->
-	<link rel="stylesheet" href="../plugins/kindeditor/themes/default/default.css" />
-	<script charset="utf-8" src="../plugins/kindeditor/kindeditor-min.js"></script>
-	<script charset="utf-8" src="../plugins/kindeditor/lang/zh_CN.js"></script>
-    
-    
-      
-    
-    
+	<link rel="stylesheet" href="/plugins/kindeditor/themes/default/default.css" />
+	<script charset="utf-8" src="/plugins/kindeditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="/plugins/kindeditor/lang/zh_CN.js"></script>
+
+	<!--引入js-->
+	<script src="/plugins/angularjs/angular.min.js"></script>
+
+	<!--分页插件引入-->
+	<script src="/plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="/plugins/angularjs/pagination.css">
+
+	<!--引入公共angularjs模块-->
+	<script src="/js/base_pagination.js"></script>
+	<!--引入js 公共controller-->
+	<script src="/js/controller/baseController.js"></script>
+	<!--引入js controller-->
+	<script src="/js/controller/goodsController.js"></script>
+	<!--引入js service-->
+	<script src="/js/service/goodsService.js"></script>
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" >
+<body ng-app="pinyougou" ng-controller="goodsController" class="hold-transition skin-red sidebar-mini" >
 
             <!-- 正文区域 -->
             <section class="content">
@@ -86,44 +98,42 @@
 									
 		                           <div class="col-md-2 title">商品名称</div>
 		                           <div class="col-md-10 data">
-		                               <input type="text" class="form-control"    placeholder="商品名称" value="">
+		                               <input type="text" ng-model="entity.goodsName" class="form-control" placeholder="商品名称" value="">
 		                           </div>
 		                           
 		                           <div class="col-md-2 title">品牌</div>
 		                           <div class="col-md-10 data">
-		                              <select class="form-control" ></select>
+		                              <select class="form-control" ng-model="entity.brandId"></select>
 		                           </div>
 		
 								   <div class="col-md-2 title">副标题</div>
 		                           <div class="col-md-10 data">
-		                               <input type="text" class="form-control"   placeholder="副标题" value="">
+		                               <input type="text" class="form-control" ng-model="entity.caption" placeholder="副标题" value="">
 		                           </div>
 		                           
 		                           <div class="col-md-2 title">价格</div>
 		                           <div class="col-md-10 data">
 		                           	   <div class="input-group">
 			                          	   <span class="input-group-addon">¥</span>
-			                               <input type="text" class="form-control"  placeholder="价格" value="">
+			                               <input type="text" class="form-control" ng-model="entity.price" placeholder="价格" value="">
 		                           	   </div>
 		                           </div>
 		                           
 		                           <div class="col-md-2 title editer">商品介绍</div>
                                    <div class="col-md-10 data editer">
-                                       <textarea name="content" style="width:800px;height:400px;visibility:hidden;" ></textarea>
+                                       <textarea name="content" style="width:800px;height:400px;visibility:hidden;" ng-model="entity.goodsDesc.introduction"></textarea>
                                    </div>
 		                           
 		                           <div class="col-md-2 title rowHeight2x">包装列表</div>
 		                           <div class="col-md-10 data rowHeight2x">
-		                               
-		                           	<textarea rows="4"  class="form-control"   placeholder="包装列表"></textarea>
+		                           	<textarea rows="4"  class="form-control" ng-model="entity.goodsDesc.packageList" placeholder="包装列表"></textarea>
 		                           </div>
 		                           
 		                           <div class="col-md-2 title rowHeight2x">售后服务</div>
 		                           <div class="col-md-10 data rowHeight2x">
-		                               <textarea rows="4"  class="form-control"    placeholder="售后服务"></textarea>
+		                               <textarea rows="4"  class="form-control" ng-model="entity.goodsDesc.saleService" placeholder="售后服务"></textarea>
 		                           </div>                        
-                                  
-                                    
+
                                 </div>
                             </div>
                             
@@ -342,7 +352,7 @@
                  	
                    </div>
                   <div class="btn-toolbar list-toolbar">
-				      <button class="btn btn-primary" ><i class="fa fa-save"></i>保存</button>
+				      <button ng-click="save()" class="btn btn-primary" ><i class="fa fa-save"></i>保存</button>
 				      <button class="btn btn-default" >返回列表</button>
 				  </div>
 			
