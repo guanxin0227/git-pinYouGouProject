@@ -93,4 +93,16 @@ public class ItemCatServiceImpl implements ItemCatService {
         criteria.andIn("id",ids);
         return itemCatMapper.deleteByExample(example);
     }
+
+    /***
+     * 根据父id查询所有子类
+     * @param id
+     * @return
+     */
+    @Override
+    public List<ItemCat> findByParentId(long id) {
+        ItemCat itemCat = new ItemCat();
+        itemCat.setParentId(id);
+        return itemCatMapper.select(itemCat);
+    }
 }

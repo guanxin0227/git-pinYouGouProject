@@ -60,4 +60,11 @@ app.controller("itemCatController",function($scope,$http,$controller,itemCatServ
             }
         });
     }
+
+    //根据父id查询所有子类
+    $scope.findByParentId=function (id) {
+        itemCatService.findByParentId(id).success(function (response) {
+            $scope.list = response;
+        })
+    }
 });
