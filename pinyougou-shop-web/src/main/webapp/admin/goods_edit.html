@@ -37,10 +37,11 @@
 	<!--引入js service-->
 	<script src="/js/service/goodsService.js"></script>
 	<script src="/js/service/uploadService.js"></script>
+	<script src="/js/service/itemCatService.js"></script>
 
 </head>
 
-<body ng-app="pinyougou" ng-controller="goodsController" class="hold-transition skin-red sidebar-mini" >
+<body ng-app="pinyougou" ng-controller="goodsController" ng-init="findItemCat1List(0)" class="hold-transition skin-red sidebar-mini" >
 
             <!-- 正文区域 -->
             <section class="content">
@@ -79,17 +80,22 @@
 		                           	  	<table>
 		                           	  		<tr>
 		                           	  			<td>
-		                           	  				<select class="form-control" >														
+		                           	  				<select class="form-control" ng-model="entity.category1Id" ng-change="findItemCat2List(entity.category1Id)">
+														<option ng-repeat="itemCat in itemCat1List" value="{{itemCat.id}}">{{itemCat.name}}</option>
 		                           	  				</select>
 		                              			</td>
 		                              			<td>
-		                           	  				<select class="form-control select-sm" ></select>
+		                           	  				<select class="form-control select-sm" ng-model="entity.category2Id" ng-change="findItemCat3List(entity.category2Id)">
+														<option ng-repeat="itemCat in itemCat2List" value="{{itemCat.id}}">{{itemCat.name}}</option>
+													</select>
 		                              			</td>
 		                              			<td>
-		                           	  				<select class="form-control select-sm" ></select>
+		                           	  				<select class="form-control select-sm" ng-model="entity.category3Id" ng-change="getTypeId(entity.category3Id)">
+														<option ng-repeat="itemCat in itemCat3List" value="{{itemCat.id}}">{{itemCat.name}}</option>
+													</select>
 		                              			</td>
 		                              			<td>
-		                           	  				模板ID:19
+		                           	  				模板ID:{{entity.typeTemplateId}}
 		                              			</td>
 		                           	  		</tr>
 		                           	  	</table>

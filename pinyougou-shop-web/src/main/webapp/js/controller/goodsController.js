@@ -2,7 +2,7 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService){
+app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService,itemCatService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
@@ -93,6 +93,43 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
                 //获取文件上传后回显的url
                 $scope.image_entity.url=response.message;
             }
+        })
+    }
+
+    //查询商品1级分类
+    $scope.findItemCat1List=function (id) {
+        itemCatService.findByParentId(id).success(function (response) {
+            $scope.itemCat1List=response;
+        })
+        //清空2级，3级目录
+        $scope.itemCat2List=null;
+        $scope.itemCat3List=null;
+        //清空模板id
+        $scope.entity.typeTemplateId=null;
+    }
+
+    //查询商品2级分类
+    $scope.findItemCat2List=function (id) {
+        itemCatService.findByParentId(id).success(function (response) {
+            $scope.itemCat2List=response;
+        })
+        //3级目录
+        $scope.itemCat3List=null;
+        //清空模板id
+        $scope.entity.typeTemplateId=null;
+    }
+
+    //查询商品3级分类
+    $scope.findItemCat3List=function (id) {
+        itemCatService.findByParentId(id).success(function (response) {
+            $scope.itemCat3List=response;
+        })
+    }
+
+    //查询第3级分类发生变化
+    $scope.getTypeId=function (id) {
+        itemCatService.findOne(id).success(function (response) {
+            $scope.entity.typeTemplateId = response.typeId;
         })
     }
 });
