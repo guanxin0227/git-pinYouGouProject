@@ -147,7 +147,6 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
                 //$scope.specList=angular.fromJson(response.specIds);
                 typeTemplateService.getOptionsByTypeId($scope.entity.typeTemplateId).success(function (response) {
                     $scope.specList=response;
-                    console.log("!1",response);
                 });
             });
 
