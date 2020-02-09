@@ -2,10 +2,29 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService){
+app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
+
+    //定义一个数据用于储存图片上传信息
+    //$scope.image_entity={};
+
+    //定义一个数据，用于存储所有上传图片
+    //$scope.imageList=[];
+    $scope.entity={goodsDesc:{itemImages:[]}};
+
+    //移除集合中照片
+    $scope.remove_image_entity=function(index){
+        //$scope.imageList.splice(index,1);
+        $scope.entity.goodsDesc.itemImages.splice(index,1);
+    }
+
+    //往集合中添加图片
+    $scope.add_image_entity=function(){
+        //$scope.imageList.push($scope.image_entity);
+        $scope.entity.goodsDesc.itemImages.push($scope.image_entity);
+    }
 
     //获取所有的Goods信息
     $scope.getPage=function(page,size){
@@ -65,5 +84,15 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
                 alert(response.message);
             }
         });
+    }
+
+    //文件上传
+    $scope.uploadFile=function () {
+        uploadService.uploadFile().success(function (response) {
+            if(response.success){
+                //获取文件上传后回显的url
+                $scope.image_entity.url=response.message;
+            }
+        })
     }
 });
