@@ -203,7 +203,7 @@
 			                        </div>
                             	</div>
                             	<p>
-                            	
+                            	<div>ddd:{{entity.goodsDesc.specificationItems}}</div>
                             	<div>
                             	
 	                                <div class="row data-type">
@@ -213,7 +213,7 @@
 					                        <div class="col-md-10 data">
 					                               
 					                            <span ng-repeat="option in spec.options">
-					                            	<input  type="checkbox" >{{option.optionName}}
+					                            	<input ng-click="updateSpecAttribute($event,spec.text,option.optionName)" type="checkbox" >{{option.optionName}}
 					                            </span>  	
 
 					                            	

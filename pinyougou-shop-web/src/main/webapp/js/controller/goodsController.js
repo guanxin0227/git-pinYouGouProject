@@ -10,9 +10,9 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
     //定义一个数据用于储存图片上传信息
     //$scope.image_entity={};
 
-    //定义一个数据，用于存储所有上传图片
+    //定义一个数据，用于存储所有上传图片,规格结果集
     //$scope.imageList=[];
-    $scope.entity={goodsDesc:{itemImages:[]}};
+    $scope.entity={goodsDesc:{itemImages:[],specificationItems:[]}};
 
     //移除集合中照片
     $scope.remove_image_entity=function(index){
@@ -152,4 +152,43 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
 
         }
     });
+
+    //存储选中的规格数据
+    $scope.updateSpecAttribute=function ($event,atrributeName,attributeValue) {
+        //判断当前规格名字，在集合中是否存在  比如说传入参数(atrributeName)为:屏幕尺寸
+        var result = searchObjectByKey($scope.entity.goodsDesc.specificationItems,atrributeName);
+
+        // 如果存在，则直接将该对象返回过来result
+        if(result!=null){
+            //如果是勾选事件
+            if($event.target.checked){
+                //将勾选中的规格选项(attributeValue:例如3G)加入到result的attributeValue属性中
+                result.attributeValue.push(attributeValue);
+            }else{
+                //将勾选的选项移除
+                var valueIndex = result.attributeValue.indexOf(attributeValue);
+                result.attributeValue.splice(valueIndex,1);
+
+                if(result.attributeValue.length<=0){
+                    //如果选项个数为0，移除该规格
+                    var nameIndex = $scope.entity.goodsDesc.specificationItems.indexOf(result);
+                    $scope.entity.goodsDesc.specificationItems.splice(nameIndex,1);
+                }
+
+            }
+
+        }else{
+            //如果不存在,构建一条数据加入集合
+            var newSpec = {"attributeName":atrributeName,"attributeValue":[attributeValue]};
+            $scope.entity.goodsDesc.specificationItems.push(newSpec);
+        }
+    };
+    //接上，调用此方法 list=specificationItems:[]
+    searchObjectByKey=function (list,attributeName) {
+        for (var i=0;i<list.length;i++){
+            if(list[i]['attributeName']==attributeName){
+                return list[i];
+            }
+        }
+    };
 });
