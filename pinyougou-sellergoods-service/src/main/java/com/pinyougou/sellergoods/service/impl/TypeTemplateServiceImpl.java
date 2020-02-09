@@ -1,20 +1,29 @@
 package com.pinyougou.sellergoods.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.mapper.SpecificationOptionMapper;
 import com.pinyougou.mapper.TypeTemplateMapper;
+import com.pinyougou.model.SpecificationOption;
 import com.pinyougou.model.TypeTemplate;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TypeTemplateServiceImpl implements TypeTemplateService {
 
     @Autowired
     private TypeTemplateMapper typeTemplateMapper;
+    @Autowired
+    private SpecificationOptionMapper specificationOptionMapper;
 
 	/**
 	 * 返回TypeTemplate全部列表
@@ -92,5 +101,37 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         //所需的SQL语句类似 delete from tb_typeTemplate where id in(1,2,5,6)
         criteria.andIn("id",ids);
         return typeTemplateMapper.deleteByExample(example);
+    }
+    /***
+     * 根据模板id查询规格选项信息
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Map> getOptionsByTypeId(Long id) {
+
+        //先查询出模板中的规格信息
+        TypeTemplate typeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
+
+        //通过FastJSON把字符串集合转换成集合数据，并循环
+        List<Map> listMap = JSON.parseArray(typeTemplate.getSpecIds(),Map.class);
+
+        for (Map map : listMap) {
+
+            if(StringUtils.isNotEmpty(map.get("id").toString())){
+                //根据spec_id JSON中的值的id去数据库查询规格选项
+                long spceId = Long.parseLong(map.get("id").toString());
+                SpecificationOption specificationOption = new SpecificationOption();
+                specificationOption.setId(spceId);
+                //List<SpecificationOption> options = specificationOptionMapper.select(specificationOption);
+                List<SpecificationOption> options = specificationOptionMapper.selectBySpecId(spceId);
+
+                //构建JSON数据options结构
+                map.put("options",options);
+            }
+
+        }
+
+        return listMap;
     }
 }

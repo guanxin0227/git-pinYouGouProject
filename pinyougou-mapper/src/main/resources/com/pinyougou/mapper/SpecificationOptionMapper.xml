@@ -10,4 +10,7 @@
     <result column="spec_id" property="specId" jdbcType="BIGINT" />
     <result column="orders" property="orders" jdbcType="INTEGER" />
   </resultMap>
+  <select id="selectBySpecId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    SELECT * FROM pinyougoudb.tb_specification_option where spec_id = #{id};
+  </select>
 </mapper>

@@ -2,7 +2,7 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService,itemCatService){
+app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService,itemCatService,typeTemplateService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
@@ -132,4 +132,25 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
             $scope.entity.typeTemplateId = response.typeId;
         })
     }
+
+    //监控entity.typeTemplateId的变化
+    $scope.$watch('entity.typeTemplateId',function (newValue,oldValue) {
+        if(!isNaN(newValue)){
+            typeTemplateService.findOne(newValue).success(function (response) {
+                //获取品牌列表
+                $scope.brandList=angular.fromJson(response.brandIds);
+
+                //扩展属性
+                $scope.entity.goodsDesc.customAttributeItems=angular.fromJson(response.customAttributeItems);
+
+                //调用后台实现规格信息填充
+                //$scope.specList=angular.fromJson(response.specIds);
+                typeTemplateService.getOptionsByTypeId($scope.entity.typeTemplateId).success(function (response) {
+                    $scope.specList=response;
+                    console.log("!1",response);
+                });
+            });
+
+        }
+    });
 });

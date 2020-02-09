@@ -33,4 +33,9 @@ app.service("typeTemplateService",function($http){
         return $http.post("/typeTemplate/delete.shtml",ids);
     }
 
+    //查询规格选项
+    this.getOptionsByTypeId=function (id) {
+        return $http.get("/typeTemplate/getOptionsByTypeId/"+ id +".shtml");
+    }
+
 });

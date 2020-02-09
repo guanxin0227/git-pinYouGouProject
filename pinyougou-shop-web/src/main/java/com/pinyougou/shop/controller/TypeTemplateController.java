@@ -7,6 +7,7 @@ import com.pinyougou.sellergoods.service.TypeTemplateService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/typeTemplate")
@@ -116,5 +117,16 @@ public class TypeTemplateController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<TypeTemplate> list() {
         return typeTemplateService.getAll();
+    }
+
+
+    /***
+     * 根据模板id查询规格选项信息
+     * 获取JSON数据
+     * @return
+     */
+    @RequestMapping(value = "/getOptionsByTypeId/{id}")
+    public List<Map> getOptionsByTypeId(@PathVariable(value = "id") Long id){
+        return typeTemplateService.getOptionsByTypeId(id);
     }
 }
