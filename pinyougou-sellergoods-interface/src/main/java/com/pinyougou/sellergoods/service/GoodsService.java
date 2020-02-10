@@ -1,6 +1,8 @@
 package com.pinyougou.sellergoods.service;
+
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.model.Goods;
+
 import java.util.List;
 
 public interface GoodsService {

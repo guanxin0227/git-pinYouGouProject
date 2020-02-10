@@ -7,6 +7,7 @@ import com.pinyougou.http.ShopStatus;
 import com.pinyougou.mapper.*;
 import com.pinyougou.model.*;
 import com.pinyougou.sellergoods.service.GoodsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
@@ -58,8 +59,34 @@ public class GoodsServiceImpl implements GoodsService {
         PageHelper.startPage(pageNum,pageSize);
        
         //执行查询
-        List<Goods> all = goodsMapper.select(goods);
-        PageInfo<Goods> pageInfo = new PageInfo<Goods>(all);
+//        List<Goods> all = goodsMapper.select(goods);
+
+        //条件查询实现
+        Example example = new Example(Goods.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        if(goods != null){
+
+            //商家sellerId查询
+            if(StringUtils.isNotEmpty(goods.getSellerId())){
+                criteria.andEqualTo("sellerId",goods.getSellerId());
+            }
+
+            //状态查询
+            if(StringUtils.isNotEmpty(goods.getAuditStatus())){
+                criteria.andEqualTo("auditStatus",goods.getAuditStatus());
+            }
+
+            //模糊查询
+            if(StringUtils.isNotEmpty(goods.getGoodsName())){
+                criteria.andLike("goodsName","%" + goods.getGoodsName() + "%");
+            }
+        }
+
+        //查询
+        List<Goods> list = goodsMapper.selectByExample(example);
+
+        PageInfo<Goods> pageInfo = new PageInfo<Goods>(list);
         return pageInfo;
     }
 
@@ -82,6 +109,18 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDesc.setGoodsId(goods.getId());
         goodsDescMapper.insertSelective(goodsDesc);
 
+        //调用公共增加方法
+        addItems(goods);
+
+        return aumont;
+    }
+
+    /***
+     * 抽取公共item增加方法
+     * @param goods
+     * @return
+     */
+    public void addItems(Goods goods) {
         //判断是否启动规格
         if(goods.getIsEnableSpec().equals(ShopStatus.ENABLE)){
             //增加item表 SKU
@@ -126,10 +165,12 @@ public class GoodsServiceImpl implements GoodsService {
                 //添加到数据库
                 itemMapper.insertSelective(item);
         }
-
-        return aumont;
     }
-
+    /***
+     * 抽取公共goods增加方法
+     * @param goods
+     * @return
+     */
     public void goodsParameterInit(Goods goods, Item item) {
 
         //图片，无图片服务器，注释掉
@@ -172,7 +213,20 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public Goods getOneById(Long id) {
-        return goodsMapper.selectByPrimaryKey(id);
+        //查询goods表
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+
+        //查询goodsDesc表
+        GoodsDesc goodsDesc = goodsDescMapper.selectByPrimaryKey(id);
+        goods.setGoodsDesc(goodsDesc);
+
+        //查询item表
+        Item item = new Item();
+        item.setGoodsId(id);
+        List<Item> itemList = itemMapper.select(item);
+        goods.setItems(itemList);
+
+        return goods;
     }
 
 
@@ -183,7 +237,23 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public int updateGoodsById(Goods goods) {
-        return goodsMapper.updateByPrimaryKeySelective(goods);
+
+        //修改goods表  状态由审核通过变成待审核
+        goods.setAuditStatus(ShopStatus.NO_EXAMINE);
+        int goodsCount = goodsMapper.updateByPrimaryKeySelective(goods);
+
+        //修改goodsDesc表
+        goodsDescMapper.updateByPrimaryKeySelective(goods.getGoodsDesc());
+
+        //删除item
+        Item item = new Item();
+        item.setGoodsId(goods.getId());
+        itemMapper.delete(item);
+
+        //新增item   调用公共增加方法
+        addItems(goods);
+
+        return goodsCount;
     }
 
 
