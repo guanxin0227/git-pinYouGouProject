@@ -17,7 +17,7 @@
     <dubbo:application name="pinyougou-shop-web" />
 
     <!--设置客户端请求超时时间-->
-    <dubbo:consumer timeout="10000"  />
+    <dubbo:consumer timeout="1000000"  />
 
     <!--注册中心-->
     <dubbo:registry address="zookeeper://192.168.25.128:2181" />

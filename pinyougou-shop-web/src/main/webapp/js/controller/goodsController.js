@@ -191,4 +191,163 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
             }
         }
     };
+
+
+    //SKU重组
+    $scope.createItemsbak=function () {
+        //没有选中任何规格的时候，有一个默认商品
+        var item={"price":0,"num":0,"status":1,"isDefault":"1",spec:{}};
+        var items0=[item];
+
+        //第1次选中第1列的规格属性
+        $scope.items1=[];
+        if($scope.entity.goodsDesc.specificationItems.length>=1){
+            for(var i=0;i<items0.length;i++){
+                //获取所有规格选项，并循环
+                var attributeValue = $scope.entity.goodsDesc.specificationItems[0].attributeValue;
+                var attributeName = $scope.entity.goodsDesc.specificationItems[0].attributeName;
+
+                //循环跟上一次重组的商品结果集再次重组
+                for(var j=0;j<attributeValue.length;j++){
+                    //深克隆
+                    var newItem =angular.copy( items0[i] );
+                    //      spec:{"机身内存":"128G"}
+                    newItem.spec[attributeName]=attributeValue[j];
+
+                    //将重组的集合数据存入到items1
+                    $scope.items1.push(newItem);
+                }
+            }
+        }
+
+        //第2次选中第1列的规格属性
+        $scope.items2=[];
+        if($scope.entity.goodsDesc.specificationItems.length>=2){
+            for(var i=0;i<$scope.items1.length;i++){
+                //获取所有规格选项，并循环
+                var attributeValue = $scope.entity.goodsDesc.specificationItems[1].attributeValue;
+                var attributeName = $scope.entity.goodsDesc.specificationItems[1].attributeName;
+
+                //循环跟上一次重组的商品结果集再次重组
+                for(var j=0;j<attributeValue.length;j++){
+                    //深克隆
+                    var newItem = angular.copy( $scope.items1[i] );
+                    //      spec:{"机身内存":"128G"}
+                    newItem.spec[attributeName]=attributeValue[j];
+
+                    //将重组的集合数据存入到items1
+                    $scope.items2.push(newItem);
+                }
+            }
+        }
+
+
+        //第3次选中第1列的规格属性
+        $scope.items3=[];
+        if($scope.entity.goodsDesc.specificationItems.length>=3){
+            for(var i=0;i<$scope.items2.length;i++){
+                //获取所有规格选项，并循环
+                var attributeValue = $scope.entity.goodsDesc.specificationItems[2].attributeValue;
+                var attributeName = $scope.entity.goodsDesc.specificationItems[2].attributeName;
+
+                //循环跟上一次重组的商品结果集再次重组
+                for(var j=0;j<attributeValue.length;j++){
+                    //深克隆
+                    var newItem =angular.copy( $scope.items2[i] );
+                    //      spec:{"机身内存":"128G"}
+                    newItem.spec[attributeName]=attributeValue[j];
+
+                    //将重组的集合数据存入到items1
+                    $scope.items3.push(newItem);
+                }
+            }
+        }
+    }
+
+    //提取公共方法
+    // addCloumn=function(itemsList,attributeName,attributeValue){
+    //         //第1次选中第1列的规格属性
+    //         var items=[];
+    //         for(var i=0;i<itemsList.length;i++){
+    //             //循环跟上一次重组的商品结果集再次重组
+    //             for(var j=0;j<attributeValue.length;j++){
+    //                 //深克隆
+    //                 var newItem =angular.copy( itemsList[i] );
+    //                 //spec:{"机身内存":"128G"}
+    //                 newItem.spec[attributeName]=attributeValue[j];
+    //
+    //                 //将重组的集合数据存入到items1
+    //                 items.push(newItem);
+    //             }
+    //         }
+    //         return items;
+    // }
+
+    //SKU重组
+    // $scope.createItems=function () {
+    //     //没有选中任何规格的时候，有一个默认商品
+    //     var item={"price":0,"num":0,"status":1,"isDefault":"1",spec:{}};
+    //     var items0=[item];
+    //
+    //     //第1次选中第1列的规格属性
+    //     $scope.items1=[];
+    //     if($scope.entity.goodsDesc.specificationItems.length>=1){
+    //         //获取所有规格选项，并循环
+    //         var attributeValue = $scope.entity.goodsDesc.specificationItems[0].attributeValue;
+    //         var attributeName = $scope.entity.goodsDesc.specificationItems[0].attributeName;
+    //         $scope.items1 = addCloumn(items0,attributeName,attributeValue);
+    //     }
+    //
+    //     //第2次选中第1列的规格属性
+    //     $scope.items2=[];
+    //     if($scope.entity.goodsDesc.specificationItems.length>=2){
+    //
+    //         //获取所有规格选项，并循环
+    //         var attributeValue = $scope.entity.goodsDesc.specificationItems[1].attributeValue;
+    //         var attributeName = $scope.entity.goodsDesc.specificationItems[1].attributeName;
+    //         $scope.items2 = addCloumn($scope.items1,attributeName,attributeValue);
+    //     }
+    //
+    //     //第3次选中第1列的规格属性
+    //     $scope.items3=[];
+    //     if($scope.entity.goodsDesc.specificationItems.length>=3){
+    //         //获取所有规格选项，并循环
+    //         var attributeValue = $scope.entity.goodsDesc.specificationItems[2].attributeValue;
+    //         var attributeName = $scope.entity.goodsDesc.specificationItems[2].attributeName;
+    //         $scope.items3 = addCloumn($scope.items2,attributeName,attributeValue);
+    //     }
+    // }
+
+    //上次组合的商品集合数据传入，当前选中的规格名字和规格选项集合传入
+    addCloumn=function (itemlist,attributeValue,attributeName) {
+        var items=[];
+        for(var i=0;i<itemlist.length;i++){
+            //循环跟上一次重组的商品结果集再次重组
+            for(var j=0;j<attributeValue.length;j++){
+                //深克隆
+                var newItem =angular.copy( itemlist[i] );
+                //      spec:{"机身内存":"128G"}
+                newItem.spec[attributeName]=attributeValue[j];
+
+                //将重组的集合数据存入到items1
+                items.push(newItem);
+            }
+        }
+        return items;
+    }
+
+    //SKU重组
+    $scope.createItems=function () {
+        //没有选中任何规格的时候，有一个默认商品
+        var item={"price":0,"num":0,"status":1,"isDefault":"0",spec:{}};
+        $scope.entity.items=[item];
+
+        //遍历所有规格，上次组合的商品集合数据传入，当前选中的规格名字和规格选项集合传入
+        for(var i=0;i<$scope.entity.goodsDesc.specificationItems.length;i++){
+            var attributeValue = $scope.entity.goodsDesc.specificationItems[i].attributeValue;
+            var attributeName = $scope.entity.goodsDesc.specificationItems[i].attributeName;
+            //(itemlist,attributeValue,attributeName)
+            $scope.entity.items = addCloumn($scope.entity.items,attributeValue,attributeName);
+        }
+    }
 });
