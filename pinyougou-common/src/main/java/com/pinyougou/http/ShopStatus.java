@@ -18,4 +18,25 @@ public class ShopStatus {
     /** 关闭 */
     public static final String CLOSE_EXAMINE = "3";
 
+    /**
+     *  @author: guanx
+     *  @Date: 2020/2/10 11:59
+     *  @Description: 以下是否启动规格配置
+     */
+    /** 启用 */
+    public static final String ENABLE = "1";
+
+    /** 不启用 */
+    public static final String DISENABLE = "0";
+
+    /**
+     *  @author: guanx
+     *  @Date: 2020/2/10 11:59
+     *  @Description: 以下是否默认的商品
+     */
+    /** 默认 */
+    public static final String DEFAULT = "1";
+
+    /** 不默认 */
+    public static final String UNDEFAULT = "0";
 }

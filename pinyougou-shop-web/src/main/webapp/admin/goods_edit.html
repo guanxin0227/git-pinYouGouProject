@@ -199,12 +199,12 @@
                             	<div class="row data-type">
 	                            	<div class="col-md-2 title">是否启用规格</div>
 			                        <div class="col-md-10 data">
-			                        	<input type="checkbox" >			                           
+			                        	<input type="checkbox" ng-model="entity.isEnableSpec" ng-true-value="1" ng-false-value="0">
 			                        </div>
                             	</div>
                             	<p>
 
-                            	<div>
+                            	<div ng-if="entity.isEnableSpec==1">
                             	
 	                                <div class="row data-type">
 
@@ -216,7 +216,6 @@
 					                            	<input ng-click="updateSpecAttribute($event,spec.text,option.optionName);createItems()" type="checkbox" >{{option.optionName}}
 					                            </span>  	
 
-					                            	
 					                        </div>
 		                                </div>  
 		                                                                                  
@@ -228,7 +227,7 @@
 						                    <thead>
 						                        <tr>					                          
 												    <th class="sorting" ng-repeat="spec in entity.goodsDesc.specificationItems">{{spec.attributeName}}</th>
-													<th class="sorting">网络制式</th>
+<!--													<th class="sorting">网络制式</th>-->
 												    <th class="sorting">价格</th>
 												    <th class="sorting">库存</th>
 												    <th class="sorting">是否启用</th>
