@@ -117,4 +117,25 @@ public class GoodsController {
     public List<Goods> list() {
         return goodsService.getAll();
     }
+
+    /***
+     * 审核操作 ，更新审核状态
+     * 获取JSON数据
+     * @return
+     */
+    @RequestMapping("/update/status")
+    public Result updateStatus(@RequestBody List<Long> ids,String status){
+        try {
+            //更新状态
+            int mcount = goodsService.updateStatus(ids,status);
+
+            if(mcount>0){
+                return new Result(true,"审核通过");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Result(true,"审核失败");
+    }
 }

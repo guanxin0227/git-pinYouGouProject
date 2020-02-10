@@ -83,6 +83,8 @@ public class GoodsServiceImpl implements GoodsService {
             }
         }
 
+        criteria.andEqualTo("isDelete",ShopStatus.ISNOTDELETE);
+
         //查询
         List<Goods> list = goodsMapper.selectByExample(example);
 
@@ -100,6 +102,8 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int add(Goods goods) {
 
+        //新建IsDelete默认0:未删除；1：删除
+        goods.setIsDelete(ShopStatus.ISNOTDELETE);
         //增加goods表
         int aumont = goodsMapper.insertSelective(goods);
 
@@ -270,6 +274,30 @@ public class GoodsServiceImpl implements GoodsService {
 
         //所需的SQL语句类似 delete from tb_goods where id in(1,2,5,6)
         criteria.andIn("id",ids);
-        return goodsMapper.deleteByExample(example);
+        //return goodsMapper.deleteByExample(example);
+        //非物理删除 改变数据库字段状态
+        Goods goods = new Goods();
+        goods.setIsDelete(ShopStatus.ISDELETE);
+        return goodsMapper.updateByExampleSelective(goods,example);
+    }
+
+    /***
+     * 审核：根据IDs批量更新goods状态
+     * @param ids
+     * @param status
+     * @return
+     */
+    @Override
+    public int updateStatus(List<Long> ids, String status) {
+
+        Example example = new Example(Goods.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id",ids);
+
+        //修改操作
+        Goods goods = new Goods();
+        goods.setAuditStatus(status);
+
+        return goodsMapper.updateByExampleSelective(goods,example);
     }
 }

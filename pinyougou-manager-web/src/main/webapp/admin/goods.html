@@ -15,9 +15,26 @@
 	<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
 
+	<!--引入js-->
+	<script src="/plugins/angularjs/angular.min.js"></script>
+
+	<!--分页插件引入-->
+	<script src="/plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="/plugins/angularjs/pagination.css">
+
+	<!--引入公共angularjs模块-->
+	<script src="/js/base_pagination.js"></script>
+	<!--引入js 公共controller-->
+	<script src="/js/controller/baseController.js"></script>
+	<!--引入js controller-->
+	<script src="/js/controller/goodsController.js"></script>
+	<!--引入js service-->
+	<script src="/js/service/goodsService.js"></script>
+	<script src="/js/service/itemCatService.js"></script>
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" >
+<body ng-app="pinyougou" ng-controller="goodsController" ng-init="getItemCatShowList()" class="hold-transition skin-red sidebar-mini" >
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -33,17 +50,18 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
-                                        <button type="button" class="btn btn-default" title="审核通过" ><i class="fa fa-check"></i> 审核通过</button>
-                                        <button type="button" class="btn btn-default" title="驳回" ><i class="fa fa-ban"></i> 驳回</button>                                  
+                                        <button type="button" ng-click="delete()" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" ng-click="updateStatus('1')" class="btn btn-default" title="审核通过" ><i class="fa fa-check"></i> 审核通过</button>
+                                        <button type="button" ng-click="updateStatus('2')" class="btn btn-default" title="审核不通过" ><i class="fa fa-ban"></i> 审核不通过</button>
+                                        <button type="button" ng-click="updateStatus('3')" class="btn btn-default" title="关闭" ><i class="fa fa-ban"></i> 关闭</button>
                                         <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-                                    商品名称：<input >
-									<button class="btn btn-default" >查询</button>                                    
+                                    商品名称：<input ng-model="searchEntity.goodsName">
+									<button class="btn btn-default" ng-click="getPage(1,10)">查询</button>
                                 </div>
                             </div>
                             <!--工具栏/-->
@@ -66,17 +84,17 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr>
-			                              <td><input type="checkbox"></td>			                              
-				                          <td>1</td>
-									      <td>华为Mete8</td>
-									      <td>3020</td>
-									      <td>数码产品</td>
-									      <td>手机</td>
-									      <td>国产手机</td>
+			                          <tr ng-repeat="item in list">
+			                              <td><input ng-click="updateSelection($event,item.id)" type="checkbox"></td>
+				                          <td>{{item.id}}</td>
+									      <td>{{item.goodsName}}</td>
+									      <td>{{item.price}}</td>
+										  <td>{{itemCatShowList[item.category1Id]}}</td>
+										  <td>{{itemCatShowList[item.category2Id]}}</td>
+										  <td>{{itemCatShowList[item.category3Id]}}</td>
 		                                  <td>		                                  
 		                                  	<span>
-		                                  		申请中
+		                                  		{{status[item.auditStatus]}}
 		                                  	</span>
 		                                  	
 		                                  </td>		                                  
@@ -84,46 +102,12 @@
 		                                 	  <button type="button" class="btn bg-olive btn-xs" >详情</button>                  
 		                                  </td>
 			                          </tr>
-									  <tr>
-			                              <td><input type="checkbox"></td>			                              
-				                          <td>2</td>
-									      <td>三星手雷</td>
-									      <td>1080</td>
-									      <td>数码产品</td>
-									      <td>手机</td>
-									      <td>进口手机</td>
-		                                  <td>	                                 
-		                                  	
-		                                  	<span>
-		                                  		已驳回
-		                                  	</span>
-		                                  </td>		                                  
-		                                  <td class="text-center">                                          
-		                                 	  <button type="button" class="btn bg-olive btn-xs" >详情</button>                  
-		                                  </td>
-			                          </tr>
-									   <tr>
-			                              <td><input type="checkbox"></td>			                              
-				                          <td>3</td>
-									      <td>小米6S</td>
-									      <td>999</td>
-									      <td>数码产品</td>
-									      <td>手机</td>
-									      <td>国产手机</td>
-		                                  <td>	                                 
-		                                  	
-		                                  	<span>
-		                                  		审核通过
-		                                  	</span>
-		                                  </td>		                                  
-		                                  <td class="text-center">                                          
-		                                 	  <button type="button" class="btn bg-olive btn-xs" >详情</button>                  
-		                                  </td>
-			                          </tr>
+
 			                      </tbody>
 			                  </table>
-			                  <!--数据列表/-->                        
-							  
+			                  <!--数据列表/-->
+							<!--分页-->
+							<tm-pagination conf="paginationConf"></tm-pagination>
 							 
                         </div>
                         <!-- 数据表格 /-->
