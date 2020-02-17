@@ -9,6 +9,11 @@ app.service("contentCategoryService",function($http){
         return $http.post("/contentCategory/list.shtml?page="+page+"&size="+size,searchEntity);
     }
 
+    //查询列表,不分页
+    this.findAllList=function(){
+        return $http.get("/contentCategory/list.shtml");
+    }
+
     //增加ContentCategory
     this.add=function(entity){
         return $http.post("/contentCategory/add.shtml",entity);

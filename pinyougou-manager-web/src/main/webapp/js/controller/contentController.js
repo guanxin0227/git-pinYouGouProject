@@ -2,10 +2,29 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("contentController",function($scope,$http,$controller,contentService){
+app.controller("contentController",function($scope,$http,$controller,contentService,contentCategoryService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
+
+    //状态
+    $scope.status=["无效","有效"];
+
+    //分类列表显示名字的key，value数据
+    $scope.categoryNameList={};
+
+   //获取所有的Content信息，不分页
+    $scope.findAllCategoryNameList=function(){
+        //发送请求获取数据
+        contentCategoryService.findAllList().success(function(response){
+            for(var i=0; i<response.length; i++){
+                var key = response[i].id;
+                var value = response[i].name;
+                //组装一个key，value的json数据
+                $scope.categoryNameList[key]=value;
+            }
+        });
+    }
 
     //获取所有的Content信息
     $scope.getPage=function(page,size){

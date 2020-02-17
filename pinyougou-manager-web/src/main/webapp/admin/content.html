@@ -14,10 +14,27 @@
     <link rel="stylesheet" href="/css/style.css">
 	<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+
+	<!--引入js-->
+	<script src="/plugins/angularjs/angular.min.js"></script>
+
+	<!--分页插件引入-->
+	<script src="/plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="/plugins/angularjs/pagination.css">
+
+	<!--引入公共angularjs模块-->
+	<script src="/js/base_pagination.js"></script>
+	<!--引入js 公共controller-->
+	<script src="/js/controller/baseController.js"></script>
+	<!--引入js controller-->
+	<script src="/js/controller/contentController.js"></script>
+	<!--引入js service-->
+	<script src="/js/service/contentService.js"></script>
+	<script src="/js/service/contentCategoryService.js"></script>
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini">
+<body ng-app="pinyougou" ng-controller="contentController" ng-init="findAllCategoryNameList()" class="hold-transition skin-red sidebar-mini">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -66,24 +83,26 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr>
+			                          <tr ng-repeat="item in list">
 			                              <td><input  type="checkbox"></td>			                              
-				                          <td>1</td>
-									      <td>1</td>
-									      <td>促销海报1</td>
-									      <td>http://wwww.hb.com/hd1.html</td>
+				                          <td>{{item.id}}</td>
+									      <td>{{categoryNameList[item.categoryId]}}</td>
+									      <td>{{item.title}}</td>
+									      <td>{{item.url}}</td>
 									      <td>
-									      	<img alt="" src="" width="100px" height="50px">
+									      	<img alt="" src="{{item.pic}}" width="100px" height="50px">
 									      </td>
-									      <td>1</td>
-									      <td>有效</td>									     								     
+									      <td>{{item.sortOrder}}</td>
+									      <td>{{status[item.status]}}</td>
 		                                  <td class="text-center">                                           
 		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">修改</button>                                           
 		                                  </td>
 			                          </tr>
 			                      </tbody>
 			                  </table>
-			                  <!--数据列表/--> 
+			                  <!--数据列表/-->
+							<!--分页-->
+							<tm-pagination conf="paginationConf"></tm-pagination>
                         </div>
                         <!-- 数据表格 /-->
                      </div>
