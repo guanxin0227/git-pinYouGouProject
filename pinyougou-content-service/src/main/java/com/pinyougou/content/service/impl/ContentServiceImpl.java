@@ -7,6 +7,7 @@ import com.pinyougou.content.service.ContentService;
 import com.pinyougou.mapper.ContentMapper;
 import com.pinyougou.model.Content;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class ContentServiceImpl implements ContentService {
 
     @Autowired
     private ContentMapper contentMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 	/**
 	 * 返回Content全部列表
@@ -102,6 +106,14 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public List<Content> findByCategoryId(long categoryId) {
+
+        //第二次查询时，先查redis缓存，如果有数据则取缓存中数据，否则查询数据库
+        Object content = redisTemplate.boundHashOps("Content").get(categoryId);
+
+        if(null != content){
+            return (List<Content>) content;
+        }
+
         //创建Example，来构建根据ID删除数据
         Example example = new Example(Content.class);
         Example.Criteria criteria = example.createCriteria();
@@ -116,6 +128,11 @@ public class ContentServiceImpl implements ContentService {
         example.setOrderByClause("sort_order desc");
 
         List<Content> contents = contentMapper.selectByExample(example);
+
+        //当第一次查询时，数据不为空，存入redis
+        if(null != contents && contents.size()>0){
+            redisTemplate.boundHashOps("Content").put(categoryId,contents);
+        }
 
         return contents;
     }
