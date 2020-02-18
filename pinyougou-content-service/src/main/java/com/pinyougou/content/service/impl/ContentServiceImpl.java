@@ -94,4 +94,29 @@ public class ContentServiceImpl implements ContentService {
         criteria.andIn("id",ids);
         return contentMapper.deleteByExample(example);
     }
+
+    /****
+     * 根据分类查询广告信息
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Content> findByCategoryId(long categoryId) {
+        //创建Example，来构建根据ID删除数据
+        Example example = new Example(Content.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        //根据分类id查询
+        criteria.andEqualTo("categoryId",categoryId);
+
+        //根据状态筛选
+        criteria.andEqualTo("status",1);
+
+        //排序
+        example.setOrderByClause("sort_order desc");
+
+        List<Content> contents = contentMapper.selectByExample(example);
+
+        return contents;
+    }
 }

@@ -65,6 +65,7 @@
         <curator-framework.version>4.0.0</curator-framework.version>
         <slf4j.version>1.6.6</slf4j.version>
         <log4j.version>1.2.12</log4j.version>
+        <commons-pool2.version>2.0</commons-pool2.version>
     </properties>
 
     <dependencyManagement>
@@ -411,6 +412,13 @@
                 <scope>test</scope>
                 <version>${junit.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

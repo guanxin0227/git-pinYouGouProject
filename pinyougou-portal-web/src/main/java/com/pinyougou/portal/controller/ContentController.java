@@ -21,10 +21,10 @@ public class ContentController {
      * @param categoryId
      * @return
      */
-//    @RequestMapping(value = "/findByCategoryId")
-//    public List<Content> getByCategoryId(long categoryId){
-//        return  contentService.findByCategoryId(categoryId);
-//    }
+    @RequestMapping(value = "/findByCategoryId")
+    public List<Content> getByCategoryId(long categoryId){
+        return  contentService.findByCategoryId(categoryId);
+    }
 
 
 }

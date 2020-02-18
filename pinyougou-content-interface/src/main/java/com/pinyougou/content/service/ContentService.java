@@ -48,4 +48,11 @@ public interface ContentService {
      * @return
      */
     int deleteByIds(List<Long> ids);
+
+    /****
+     * 根据分类查询广告信息
+     * @param categoryId
+     * @return
+     */
+    List<Content> findByCategoryId(long categoryId);
 }
