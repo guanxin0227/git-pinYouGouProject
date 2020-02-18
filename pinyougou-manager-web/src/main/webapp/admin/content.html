@@ -31,6 +31,7 @@
 	<!--引入js service-->
 	<script src="/js/service/contentService.js"></script>
 	<script src="/js/service/contentCategoryService.js"></script>
+	<script src="/js/service/uploadService.js"></script>
 
 </head>
 
@@ -123,21 +124,21 @@
 				<tr>
 		      		<td>广告分类</td>
 		      		<td>
-		      			<select class="form-control" >
+		      			<select ng-model="entity.categoryId" ng-options="cate.id as cate.name for cate in categoryList" class="form-control" >
 		                </select>
 		      		</td>
 		      	</tr>
 		      	<tr>
 		      		<td>标题</td>
-		      		<td><input  class="form-control" placeholder="标题" >  </td>
+		      		<td><input ng-model="entity.title" class="form-control" placeholder="标题" >  </td>
 		      	</tr>
 			    <tr>
 		      		<td>URL</td>
-		      		<td><input  class="form-control" placeholder="URL" >  </td>
+		      		<td><input ng-model="entity.url" class="form-control" placeholder="URL" >  </td>
 		      	</tr>	
 		      	<tr>
 		      		<td>排序</td>
-		      		<td><input  class="form-control" placeholder="排序" >  </td>
+		      		<td><input ng-model="entity.sortOrder" class="form-control" placeholder="排序" >  </td>
 		      	</tr>			      	
 		      	<tr>
 		      		<td>广告图片</td>
@@ -146,7 +147,7 @@
 							<tr>
 								<td>
 								<input type="file" id="file" />				                
-					                <button class="btn btn-primary" type="button" >
+					                <button ng-click="uploadFile()" class="btn btn-primary" type="button" >
 				                   		上传
 					                </button>	
 					            </td>
@@ -160,14 +161,14 @@
 		      	<tr>
 		      		<td>是否有效</td>
 		      		<td>
-		      		   <input type="checkbox" class="icheckbox_square-blue" >
+		      		   <input ng-model="entity.status" ng-true-value="1" ng-false-value="0" type="checkbox" class="icheckbox_square-blue" >
 		      		</td>
 		      	</tr>  	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" ng-click="save()" data-dismiss="modal" aria-hidden="true">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>

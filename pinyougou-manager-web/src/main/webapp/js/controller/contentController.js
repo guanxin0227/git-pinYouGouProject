@@ -2,7 +2,7 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("contentController",function($scope,$http,$controller,contentService,contentCategoryService){
+app.controller("contentController",function($scope,$http,$controller,contentService,contentCategoryService,uploadService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
@@ -13,10 +13,27 @@ app.controller("contentController",function($scope,$http,$controller,contentServ
     //分类列表显示名字的key，value数据
     $scope.categoryNameList={};
 
+    //创建entity
+    $scope.entity={};
+
+    //文件上传
+    $scope.uploadFile=function(){
+        uploadService.uploadFile().success(function (response) {
+            if(response.message){
+               $scope.entity.pic = response.message;
+            }
+        })
+    }
+
    //获取所有的Content信息，不分页
     $scope.findAllCategoryNameList=function(){
         //发送请求获取数据
         contentCategoryService.findAllList().success(function(response){
+
+            //存储所有分类
+            $scope.categoryList=response;
+
+            //组装分类列表名字显示
             for(var i=0; i<response.length; i++){
                 var key = response[i].id;
                 var value = response[i].name;
