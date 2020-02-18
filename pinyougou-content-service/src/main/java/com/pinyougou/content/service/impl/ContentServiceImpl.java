@@ -57,7 +57,13 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public int add(Content content) {
-        return contentMapper.insertSelective(content);
+        int amount = contentMapper.insertSelective(content);
+
+        if(amount>0){
+            redisTemplate.boundHashOps("Content").delete(content.getCategoryId());
+        }
+
+        return amount;
     }
 
 
@@ -79,7 +85,13 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public int updateContentById(Content content) {
-        return contentMapper.updateByPrimaryKeySelective(content);
+        int amount = contentMapper.updateByPrimaryKeySelective(content);
+
+        if(amount>0){
+            redisTemplate.boundHashOps("Content").delete(content.getCategoryId());
+        }
+
+        return amount;
     }
 
 
@@ -90,13 +102,30 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public int deleteByIds(List<Long> ids) {
+
+        //根据广告id查询广告
+        Example example1 = new Example(Content.class);
+        Example.Criteria criteria1 = example1.createCriteria();
+
+        criteria1.andIn("id",ids);
+        List<Content> contents = contentMapper.selectByExample(example1);
+
         //创建Example，来构建根据ID删除数据
         Example example = new Example(Content.class);
         Example.Criteria criteria = example.createCriteria();
 
         //所需的SQL语句类似 delete from tb_content where id in(1,2,5,6)
         criteria.andIn("id",ids);
-        return contentMapper.deleteByExample(example);
+        int mcount = contentMapper.deleteByExample(example);
+
+        if(mcount>0){
+            //删除redis缓存
+            for (Content content : contents) {
+                redisTemplate.boundHashOps("Content").delete(content.getCategoryId());
+            }
+        }
+
+        return mcount;
     }
 
     /****
