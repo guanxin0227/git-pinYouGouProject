@@ -14,7 +14,7 @@ app.controller("contentController",function($scope,$http,$controller,contentServ
     $scope.categoryNameList={};
 
     //创建entity
-    $scope.entity={};
+    //$scope.entity={};
 
     //文件上传
     $scope.uploadFile=function(){
