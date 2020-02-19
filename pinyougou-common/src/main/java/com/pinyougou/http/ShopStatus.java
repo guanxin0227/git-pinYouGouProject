@@ -51,9 +51,23 @@ public class ShopStatus {
      *  @Date: 2020/2/10 11:59
      *  @Description: 以下是否被删除的商家  状态值：  0：未删除   1：删除
      */
-    /** 默认 */
+    /** 未删除 */
     public static final String ISNOTDELETE = "0";
 
-    /** 不默认 */
+    /** 删除 */
     public static final String ISDELETE = "1";
+
+    /**
+     *  @author: guanx
+     *  @Date: 2020/2/10 11:59
+     *  @Description: 以下是商品状态信息  状态值：   1：正常 2：下架 3：删除
+     */
+    /** 正常 */
+    public static final String NORMAL = "1";
+
+    /** 下架 */
+    public static final String UNDERCARRIAGE = "2";
+
+    /** 删除 */
+    public static final String DELETE = "3";
 }

@@ -1,11 +1,15 @@
 package com.pinyougou.model;
 
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.solr.core.mapping.Dynamic;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 @Table(name = "tb_item")
 public class Item implements Serializable {
@@ -14,12 +18,14 @@ public class Item implements Serializable {
      */
     @Id
     @Column(name = "id")
+    @Field
     private Long id;
 
     /**
      * 商品标题
      */
     @Column(name = "title")
+    @Field("item_title")
     private String title;
 
     /**
@@ -32,6 +38,7 @@ public class Item implements Serializable {
      * 商品价格，单位为：元
      */
     @Column(name = "price")
+    @Field("item_price")
     private BigDecimal price;
 
     @Column(name = "stock_count")
@@ -53,6 +60,7 @@ public class Item implements Serializable {
      * 商品图片
      */
     @Column(name = "image")
+    @Field("item_image")
     private String image;
 
     /**
@@ -92,6 +100,7 @@ public class Item implements Serializable {
     private String isDefault;
 
     @Column(name = "goods_id")
+    @Field("item_goodsid")
     private Long goodsId;
 
     @Column(name = "seller_id")
@@ -101,18 +110,38 @@ public class Item implements Serializable {
     private String cartThumbnail;
 
     @Column(name = "category")
+    @Field("item_category")
     private String category;
 
     @Column(name = "brand")
+    @Field("item_brand")
     private String brand;
 
     @Column(name = "spec")
     private String spec;
 
     @Column(name = "seller")
+    @Field("item_seller")
     private String seller;
 
     private static final long serialVersionUID = 1L;
+
+    //动态域
+    @Dynamic
+    @Field(value = "item_spec_*")
+    private Map<String,String> specMap;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Map<String, String> getSpecMap() {
+        return specMap;
+    }
+
+    public void setSpecMap(Map<String, String> specMap) {
+        this.specMap = specMap;
+    }
 
     /**
      * 获取商品id，同时也是商品编号
@@ -478,5 +507,35 @@ public class Item implements Serializable {
      */
     public void setSeller(String seller) {
         this.seller = seller == null ? null : seller.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", sellPoint='" + sellPoint + '\'' +
+                ", price=" + price +
+                ", stockCount=" + stockCount +
+                ", num=" + num +
+                ", barcode='" + barcode + '\'' +
+                ", image='" + image + '\'' +
+                ", categoryid=" + categoryid +
+                ", status='" + status + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", itemSn='" + itemSn + '\'' +
+                ", costPirce=" + costPirce +
+                ", marketPrice=" + marketPrice +
+                ", isDefault='" + isDefault + '\'' +
+                ", goodsId=" + goodsId +
+                ", sellerId='" + sellerId + '\'' +
+                ", cartThumbnail='" + cartThumbnail + '\'' +
+                ", category='" + category + '\'' +
+                ", brand='" + brand + '\'' +
+                ", spec='" + spec + '\'' +
+                ", seller='" + seller + '\'' +
+                ", specMap=" + specMap +
+                '}';
     }
 }
