@@ -10,6 +10,7 @@ import com.pinyougou.model.TypeTemplate;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 
@@ -22,8 +23,12 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 
     @Autowired
     private TypeTemplateMapper typeTemplateMapper;
+
     @Autowired
     private SpecificationOptionMapper specificationOptionMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 	/**
 	 * 返回TypeTemplate全部列表
@@ -45,13 +50,42 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
     public PageInfo<TypeTemplate> getAll(TypeTemplate typeTemplate,int pageNum, int pageSize) {
         //执行分页
         PageHelper.startPage(pageNum,pageSize);
-       
+
+        //将数据【品牌信息+规格信息】压入缓存
+        modifyRedis();
+
         //执行查询
         List<TypeTemplate> all = typeTemplateMapper.select(typeTemplate);
         PageInfo<TypeTemplate> pageInfo = new PageInfo<TypeTemplate>(all);
         return pageInfo;
     }
 
+    /***
+     * 将数据【品牌信息+规格信息】压入缓存
+     * @param
+     * @return
+     */
+    private void modifyRedis() {
+
+        //查询所有模板信息
+        List<TypeTemplate> typeTemplateList = typeTemplateMapper.selectAll();
+        
+        //循环，将模板对应的信息存入redis
+        for (TypeTemplate typeTemplate : typeTemplateList) {
+
+            //数据转List
+            List<Map> brandList = JSON.parseArray(typeTemplate.getBrandIds(), Map.class);
+
+            //将品牌存入redis  命名空间+key+value
+            redisTemplate.boundHashOps("BrandList").put(typeTemplate.getId(),brandList);
+
+            //将规格存入redis
+            List<Map> specList = getOptionsByTypeId(typeTemplate.getId());
+
+            redisTemplate.boundHashOps("SpecList").put(typeTemplate.getId(),specList);
+        }
+
+    }
 
 
     /***

@@ -5,6 +5,7 @@ import com.pinyougou.model.Item;
 import com.pinyougou.search.service.ItemSearchService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
 import org.springframework.data.solr.core.query.result.*;
@@ -23,6 +24,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Autowired
     private SolrTemplate solrTemplate;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * @Description 搜索方法  (高亮数据显示)
@@ -72,6 +76,42 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         //封装到Map
         Map<String,Object> dataMap = new HashMap<>();
 
+        //封装  获取分组数据
+        List<String> categoryList = getCategory(query);
+
+        dataMap.put("categoryList",categoryList);
+
+        //默认选中第一个分类
+        if(null != categoryList && categoryList.size()>0){
+
+            //查询规格品牌对应的分类信息
+            Map<String, Object> brandAndSpecMap = getBrandAndSpec(categoryList.get(0));
+
+            dataMap.putAll(brandAndSpecMap);
+        }
+
+        //总记录数
+        long totalElements = highlightPage.getTotalElements();
+        dataMap.put("total",totalElements);
+
+        //结果集对象
+        List<Item> itemList = highlightPage.getContent();
+        dataMap.put("rows",itemList);
+
+        return dataMap;
+    }
+
+    /**
+     * @Description 获取分组数据
+     * @Author  guanx
+     * @Date   2020/2/19 20:42
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    public List<String> getCategory(SimpleHighlightQuery query) {
+
         //分组查询，条件封装都使用上面的Query查询
         GroupOptions groupOptions = new GroupOptions();
 
@@ -94,18 +134,40 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             String groupValue = groupEntry.getGroupValue();
             categoryList.add(groupValue);
         }
+        return categoryList;
+    }
 
-        dataMap.put("categoryList",categoryList);
+    /**
+    * @Description 获取模板id 同时获取规格和品牌信息
+    * @Author  guanx
+    * @Date   2020/2/19 20:42
+    * @Param  
+    * @Return      
+    * @Exception   
+    *
+     * @return
+     */
+    public Map<String, Object> getBrandAndSpec(String category){
 
-        //总记录数
-        long totalElements = highlightPage.getTotalElements();
-        dataMap.put("total",totalElements);
+        Map<String,Object> dateMap =new HashMap<>();
 
-        //结果集对象
-        List<Item> itemList = highlightPage.getContent();
-        dataMap.put("rows",itemList);
+        //模板id
+        Long typeTemplateId = (Long) redisTemplate.boundHashOps("ItemCat").get(category);
 
-        return dataMap;
+        if(null != typeTemplateId){
+
+            //获取品牌信息
+            List<Map> brandList = (List<Map>) redisTemplate.boundHashOps("BrandList").get(typeTemplateId);
+
+            //获取规格信息
+            List<Map> specList = (List<Map>) redisTemplate.boundHashOps("SpecList").get(typeTemplateId);
+
+            dateMap.put("brandList",brandList);
+            dateMap.put("specList",specList);
+        }
+
+        return dateMap;
+
     }
 
     /**

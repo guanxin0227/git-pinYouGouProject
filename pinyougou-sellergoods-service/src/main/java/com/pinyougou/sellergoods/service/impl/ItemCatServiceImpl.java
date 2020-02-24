@@ -6,6 +6,7 @@ import com.pinyougou.mapper.ItemCatMapper;
 import com.pinyougou.model.ItemCat;
 import com.pinyougou.sellergoods.service.ItemCatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 import java.util.List;
@@ -15,6 +16,9 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Autowired
     private ItemCatMapper itemCatMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 	/**
 	 * 返回ItemCat全部列表
@@ -95,6 +99,7 @@ public class ItemCatServiceImpl implements ItemCatService {
     }
 
     /***
+     * 集成springDateRedis实现对redis缓存操作
      * 根据父id查询所有子类
      * @param id
      * @return
@@ -103,6 +108,19 @@ public class ItemCatServiceImpl implements ItemCatService {
     public List<ItemCat> findByParentId(long id) {
         ItemCat itemCat = new ItemCat();
         itemCat.setParentId(id);
+
+        //查询所有分类
+        List<ItemCat> itemCatList = itemCatMapper.selectAll();
+
+        for (ItemCat cat : itemCatList) {
+            //将所有分类信息压入缓存  key：分类名字  value:模板id
+            String key = cat.getName();
+            Long value = cat.getTypeId();
+
+            //第一个命名空间
+            redisTemplate.boundHashOps("ItemCat").put(key,value);
+
+        }
         return itemCatMapper.select(itemCat);
     }
 }
