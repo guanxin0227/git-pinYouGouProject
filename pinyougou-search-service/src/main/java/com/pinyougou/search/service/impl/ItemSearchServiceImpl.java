@@ -139,13 +139,18 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         dataMap.put("categoryList",categoryList);
 
-        //默认选中第一个分类
-        if(null != categoryList && categoryList.size()>0){
+        //当用户选择分类时候，根据分类检索规格和品牌
+        String category = (String) searchMap.get("category");
+        if(StringUtils.isNotBlank(category)){
+            dataMap.putAll(getBrandAndSpec(category));
+        }else{
+            if(null != categoryList && categoryList.size()>0){
 
-            //查询规格品牌对应的分类信息
-            Map<String, Object> brandAndSpecMap = getBrandAndSpec(categoryList.get(0));
+                //查询规格品牌对应的分类信息
+                Map<String, Object> brandAndSpecMap = getBrandAndSpec(categoryList.get(0));
 
-            dataMap.putAll(brandAndSpecMap);
+                dataMap.putAll(brandAndSpecMap);
+            }
         }
 
         //总记录数
