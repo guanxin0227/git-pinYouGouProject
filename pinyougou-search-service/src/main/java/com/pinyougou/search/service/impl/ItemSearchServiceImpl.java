@@ -1,6 +1,7 @@
 package com.pinyougou.search.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.pinyougou.model.Item;
 import com.pinyougou.search.service.ItemSearchService;
 import org.apache.commons.lang3.StringUtils;
@@ -91,6 +92,31 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
                 //将搜索对象加入的到query中
                 query.addFilterQuery(filterQuery);
+            }
+
+            //接收规格数据
+            Object spec = searchMap.get("spec");
+            if(null != spec){
+                //过滤搜索规格数据
+                Map<String,String> specMap = JSON.parseObject(spec.toString(), Map.class);
+
+                //循环迭代
+                for (Map.Entry<String, String> entry : specMap.entrySet()) {
+                    //获取key
+                    String key = entry.getKey();
+                    //获取value
+                    String value = entry.getValue();
+
+                    //创建Criteria
+                    Criteria criteria = new Criteria("item_spec_" + key).is(value);
+
+                    //创建FilterQuery
+                    FilterQuery filterQuery = new SimpleFilterQuery(criteria);
+
+                    //添加到query
+                    query.addFilterQuery(filterQuery);
+                }
+
             }
         }
 
