@@ -60,6 +60,38 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
                 query.addCriteria(criteria);
             }
+
+            //分类过滤
+            String category = (String) searchMap.get("category");
+
+            if(StringUtils.isNotBlank(category)){
+
+                //创建Criteria 对象，用于填充对应的搜索条件
+                Criteria criteria = new Criteria("item_category").is(category);
+
+                //搜索过滤对象
+                FilterQuery filterQuery = new SimpleFilterQuery();
+                filterQuery.addCriteria(criteria);
+
+                //将搜索过滤对象加入到query中
+                query.addFilterQuery(filterQuery);
+            }
+
+            //品牌过滤
+            String brand = (String) searchMap.get("brand");
+
+            if(StringUtils.isNotBlank(brand)){
+
+                //创建Criteria 对象，用于填充对应的搜索条件
+                Criteria criteria = new Criteria("item_brand").is(brand);
+
+                //搜索过滤
+                FilterQuery filterQuery = new SimpleFilterQuery();
+                filterQuery.addCriteria(criteria);
+
+                //将搜索对象加入的到query中
+                query.addFilterQuery(filterQuery);
+            }
         }
 
         //分页
