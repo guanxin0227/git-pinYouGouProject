@@ -6,6 +6,7 @@ import com.pinyougou.model.Item;
 import com.pinyougou.search.service.ItemSearchService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
@@ -168,6 +169,24 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         query.setRows(size);
         query.setOffset((pageNum-1)*size);
+
+        //排序查询
+        String sort = (String) searchMap.get("sort");
+        String sortField = (String) searchMap.get("sortField");
+
+        if(StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(sortField)){
+
+            Sort orders = null;
+
+            //价格排序查询
+            if(sort.equalsIgnoreCase("ASC")){
+                orders = new Sort(Sort.Direction.ASC, sortField);
+            }else {
+                orders = new Sort(Sort.Direction.DESC, sortField);
+            }
+
+            query.addSort(orders);
+        }
 
         //查询  返回结果包含高亮数据和非高亮数据
         //ScoredPage<Item> scoredPage = solrTemplate.queryForPage(query, Item.class);

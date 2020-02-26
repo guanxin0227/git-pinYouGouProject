@@ -1,7 +1,17 @@
 app.controller('searchController',function ($scope,searchService) {
 
     //定义一个存储数据，用于存储选择的筛选条件
-    $scope.searchMap={"keyword":"","category":"","brand":"",spec:{},"price":"","pageNum":1,"size":10};
+    $scope.searchMap={"keyword":"","category":"","brand":"",spec:{},"price":"","pageNum":1,"size":10,"sort":"","sortField":""};
+
+    //排序搜索
+    $scope.sortSearch=function(sort,sortField){
+        $scope.searchMap.sort=sort;
+        $scope.searchMap.sortField=sortField;
+
+        //搜索
+        $scope.search();
+
+    }
 
     //搜索条件移除
     $scope.removeItemSearch=function(key){
