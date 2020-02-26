@@ -166,6 +166,7 @@
 				<ul class="tags-choose">
 					<li class="tag" ng-if="searchMap.brand!=''" ng-click="removeItemSearch('brand')">{{searchMap.brand}}<i class="sui-icon icon-tb-close"></i></li>
 					<li class="tag" ng-if="searchMap.spec[key]!=null" ng-click="removeItemSearch(key)" ng-repeat="(key,value) in searchMap.spec">{{key}}:{{value}}<i class="sui-icon icon-tb-close"></i></li>
+					<li class="tag" ng-if="searchMap.price!=''" ng-click="removeItemSearch('price')">价格：{{searchMap.price}}<i class="sui-icon icon-tb-close"></i></li>
 				</ul>
 
 				<div class="clearfix"></div>
@@ -213,22 +214,22 @@
 					<div class="fl value">
 						<ul class="type-list">
 							<li>
-								<a>0-500元</a>
+								<a ng-click="addIteamSearch('price','0-500')">0-500元</a>
 							</li>
 							<li>
-								<a>500-1000元</a>
+								<a ng-click="addIteamSearch('price','500-1000')">500-1000元</a>
 							</li>
 							<li>
-								<a>1000-1500元</a>
+								<a ng-click="addIteamSearch('price','1000-1500')">1000-1500元</a>
 							</li>
 							<li>
-								<a>1500-2000元</a>
+								<a ng-click="addIteamSearch('price','1500-2000')">1500-2000元</a>
 							</li>
 							<li>
-								<a>2000-3000元 </a>
+								<a ng-click="addIteamSearch('price','2000-3000')">2000-3000元 </a>
 							</li>
 							<li>
-								<a>3000元以上</a>
+								<a ng-click="addIteamSearch('price','3000 以上')">3000元以上</a>
 							</li>
 						</ul>
 					</div>
@@ -318,33 +319,22 @@
 				<div class="fr page">
 					<div class="sui-pagination pagination-large">
 						<ul>
-							<li class="prev disabled">
-								<a href="#">«上一页</a>
+							<li class="prev {{page.hasPre==0?'disabled':''}}">
+								<a href="javascript:void(0)" ng-click="pageSearch(page.prePage)">«上一页</a>
 							</li>
-							<li class="active">
-								<a href="#">1</a>
+							<li ng-repeat="pg in page.pages" class="{{pg==page.pageNum?'active':''}}">
+								<a href="javascript:void(0)" ng-click="pageSearch(pg)">{{pg}}</a>
 							</li>
-							<li>
-								<a href="#">2</a>
-							</li>
-							<li>
-								<a href="#">3</a>
-							</li>
-							<li>
-								<a href="#">4</a>
-							</li>
-							<li>
-								<a href="#">5</a>
-							</li>
-							<li class="dotted"><span>...</span></li>
-							<li class="next">
-								<a href="#">下一页»</a>
+
+							<li class="dotted" ng-if="page.hasNext>0"><span>...</span></li>
+							<li class="next {{page.hasNext==0?'disabled':''}}">
+								<a href="javascript:void(0)" ng-click="pageSearch(page.nextPage)">下一页»</a>
 							</li>
 						</ul>
-						<div><span>共10页&nbsp;</span><span>
+						<div><span>{{page.totalPage}}&nbsp;</span><span>
       到第
-      <input type="text" class="page-num">
-      页 <button class="page-confirm" onclick="alert(1)">确定</button></span></div>
+      <input type="text" ng-model="searchMap.pageNum" class="page-num" style="max-width: 25px">
+      页 <button class="page-confirm" ng-click="pageSearch(searchMap.pageNum)">确定</button></span></div>
 					</div>
 				</div>
 			</div>

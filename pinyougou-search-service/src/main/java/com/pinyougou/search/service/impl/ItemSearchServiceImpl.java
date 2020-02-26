@@ -57,7 +57,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             //根据关键词查询
             if(StringUtils.isNotBlank(keyword)){
                 //第一个参数要查询的域
-                Criteria criteria = new Criteria("item_keywords").is(keyword);
+                Criteria criteria = new Criteria("item_keywords").is(keyword.replace(" ",""));
 
                 query.addCriteria(criteria);
             }
@@ -118,11 +118,56 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 }
 
             }
+
+            //添加价格区间过滤查询
+            String price = (String) searchMap.get("price");
+            //两种价格区间，1.x-y  2.x 以上
+            if(StringUtils.isNotBlank(price)){
+                //1.x-y
+                String[] ranges = price.split("-");
+
+                if(null != ranges && ranges.length == 2){
+                    //创建Creatier对象
+                    Criteria criteria = new Criteria("item_price").between(Long.parseLong(ranges[0]) , Long.parseLong(ranges[1]), true, false);
+
+                    //创建过滤搜索对象
+                    FilterQuery filterQuery = new SimpleFilterQuery(criteria);
+
+                    //加入到query查询
+                    query.addFilterQuery(filterQuery);
+                }
+
+                //2. x 以上
+                ranges = price.split(" ");
+
+                if(null != ranges && ranges.length == 2){
+                    //创建Creatier对象
+                    //Criteria criteria = new Criteria("item_price").between(Long.parseLong(ranges[0]) , null, true, true);
+                    Criteria criteria = new Criteria("item_price").greaterThanEqual(Long.parseLong(ranges[0]));
+
+                    //创建过滤搜索对象
+                    FilterQuery filterQuery = new SimpleFilterQuery(criteria);
+
+                    //加入到query查询
+                    query.addFilterQuery(filterQuery);
+                }
+
+            }
+
         }
 
         //分页
-        query.setRows(10);
-        query.setOffset(0);
+        Integer pageNum = (Integer) searchMap.get("pageNum");
+        Integer size = (Integer) searchMap.get("size");
+        if(null == pageNum){
+            pageNum = 1;
+        }
+        if(null == size){
+            size = 10;
+        }
+
+        query.setRows(size);
+        query.setOffset((pageNum-1)*size);
 
         //查询  返回结果包含高亮数据和非高亮数据
         //ScoredPage<Item> scoredPage = solrTemplate.queryForPage(query, Item.class);
@@ -174,6 +219,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      *
      */
     public List<String> getCategory(SimpleHighlightQuery query) {
+
+        //下一页重置分页
+        query.setRows(100);
+        query.setOffset(0);
 
         //分组查询，条件封装都使用上面的Query查询
         GroupOptions groupOptions = new GroupOptions();
