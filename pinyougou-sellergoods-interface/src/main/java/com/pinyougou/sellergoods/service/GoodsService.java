@@ -2,6 +2,7 @@ package com.pinyougou.sellergoods.service;
 
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.model.Goods;
+import com.pinyougou.model.Item;
 
 import java.util.List;
 
@@ -49,5 +50,19 @@ public interface GoodsService {
      */
     int deleteByIds(List<Long> ids);
 
+    /***
+     * 审核操作 ，更新审核状态
+     *  @param ids
+     *  @param status
+     * @return
+     */
     int updateStatus(List<Long> ids, String status);
+
+    /***
+     * 根据GoodsIds查询item
+     * @param ids
+     * @param status
+     * @return
+     */
+    List<Item> getByGoodsIds(List<Long> ids, String status);
 }

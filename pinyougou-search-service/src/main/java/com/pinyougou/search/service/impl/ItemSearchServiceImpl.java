@@ -229,6 +229,40 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     }
 
     /**
+     * @Description 批量导入索引库
+     * @Author  guanx
+     * @Date   2020/2/19 14:51
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public void importList(List<Item> itemList) {
+        solrTemplate.saveBeans(itemList);
+        solrTemplate.commit();
+    }
+
+    /**
+     * @Description 删除索引库
+     * @Author  guanx
+     * @Date   2020/2/19 14:51
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public void deleteByGoodsIds(List<Long> ids) {
+
+        Criteria criteria = new Criteria("item_goodsid").in(ids);
+        Query query = new SimpleQuery(criteria);
+
+        solrTemplate.delete(query);
+        solrTemplate.commit();
+    }
+
+    /**
      * @Description 获取分组数据
      * @Author  guanx
      * @Date   2020/2/19 20:42
