@@ -85,6 +85,7 @@ public class Item implements Serializable {
      * 更新时间
      */
     @Column(name = "update_time")
+    @Field("item_updatetime")
     private Date updateTime;
 
     @Column(name = "item_sn")
