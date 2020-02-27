@@ -140,7 +140,8 @@ public class GoodsServiceImpl implements GoodsService {
                 for (Map.Entry<String,String> entity:specMap.entrySet()){
                     title += " " + entity.getValue();
                 }
-                item.setTitle(title);
+
+                item.setTitle(goods.getGoodsName() + " " + title);
 
                 //调用抽取公共方法
                 goodsParameterInit(goods, item);
