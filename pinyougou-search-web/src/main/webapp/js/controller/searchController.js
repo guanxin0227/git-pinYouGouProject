@@ -1,7 +1,40 @@
-app.controller('searchController',function ($scope,searchService) {
+app.controller('searchController',function ($scope,$location,searchService) {
 
     //定义一个存储数据，用于存储选择的筛选条件
     $scope.searchMap={"keyword":"","category":"","brand":"",spec:{},"price":"","pageNum":1,"size":10,"sort":"","sortField":""};
+
+    //定义一个集合
+    $scope.resultMap={brandList:[]};
+
+    //加载搜索关键字
+    $scope.loadKeyword=function(){
+        //获取地址栏传过来的关键字
+        var keyword = $location.search()['keyword'];
+
+        //搜索操作
+        if(null != keyword){
+            $scope.searchMap.keyword = keyword;
+        }
+        //执行搜索
+        $scope.search();
+    }
+
+    //搜索品牌
+    $scope.keywordsLoadBrand=function(){
+        if($scope.resultMap.brandList != null){
+            for(var i=0;i<$scope.resultMap.brandList.length;i++){
+                //获取品牌名
+               var brandName = $scope.resultMap.brandList[i].text;
+               var index = $scope.searchMap.keyword.indexOf(brandName);
+               if(index>=0){
+                   //将品牌加入到brand
+                   $scope.searchMap.brand=brandName;
+                   return true;
+               }
+            }
+        }
+            return false;
+    }
 
     //排序搜索
     $scope.sortSearch=function(sort,sortField){
@@ -40,6 +73,9 @@ app.controller('searchController',function ($scope,searchService) {
     $scope.search=function () {
         searchService.search($scope.searchMap).success(function (response) {
            $scope.resultMap=response;
+
+           //调用品牌搜索
+           // $scope.keywordsLoadBrand();
 
            //分页
             $scope.pageHandler(response.total, $scope.searchMap.pageNum);

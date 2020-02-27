@@ -21,4 +21,9 @@ app.controller("contentController",function($scope,contentService){
     //     })
     // }
 
+    //搜索方法
+    $scope.search=function () {
+
+        location.href="http://localhost:18087?keyword=" + $scope.keyword;
+    }
 });

@@ -5,18 +5,29 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<title>品优购，优质！优质！</title>
-	 <link rel="icon" href="assets/img/favicon.ico">
+	 <link rel="icon" href="/img/assets/img/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="/css/pages-JD-index.css" />
     <link rel="stylesheet" type="text/css" href="/css/widget-jquery.autocomplete.css" />
     <link rel="stylesheet" type="text/css" href="/css/widget-cartPanelView.css" />
 
+	<!--引入js-->
 	<script src="/plugins/angularjs/angular.min.js"></script>
+
+	<!--分页插件引入-->
+	<script src="/plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="/plugins/angularjs/pagination.css">
+
+	<!--引入公共angularjs模块-->
+	<script src="/js/base_pagination.js"></script>
+
 	<!--引用-->
-	<script src="/js/base.js"></script>
-	<script src="/js/service/contentService.js"></script>
+	<script src="/js/controller/baseController.js"></script>
 	<script src="/js/controller/contentController.js"></script>
+	<script src="/js/service/contentService.js"></script>
+
+
 
 </head>
 
@@ -72,8 +83,8 @@
 							<form action="" class="sui-form form-inline">
 								<!--searchAutoComplete-->
 								<div class="input-append">
-									<input type="text" id="autocomplete" type="text" class="input-error input-xxlarge" />
-									<button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+									<input type="text" ng-model="keyword" id="autocomplete" type="text" class="input-error input-xxlarge" />
+									<button class="sui-btn btn-xlarge btn-danger" ng-click="search()" type="button">搜索</button>
 								</div>
 							</form>
 						</div>

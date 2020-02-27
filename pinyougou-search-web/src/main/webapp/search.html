@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 		<title>产品列表页</title>
-		<link rel="icon" href="assets/img/favicon.ico">
+		<link rel="icon" href="/img/assets/img/favicon.ico">
 
 		<link rel="stylesheet" type="text/css" href="/css/webbase.css" />
 		<link rel="stylesheet" type="text/css" href="/css/pages-list.css" />
@@ -28,7 +28,7 @@
 		<script src="/js/service/searchService.js"></script>
 	</head>
 
-	<body ng-app="pinyougou" ng-controller="searchController" ng-init="search()">
+	<body ng-app="pinyougou" ng-controller="searchController" ng-init="loadKeyword();search()">
 		<!-- 头部栏位 -->
 		<!--页面顶部-->
 		<div id="nav-bottom">
@@ -183,7 +183,7 @@
 					</div>
 					<div class="fl ext"></div>
 				</div>
-				<div class="type-wrap logo" ng-if="searchMap.brand==''">
+				<div class="type-wrap logo" ng-if="searchMap.brand=='' && keywordsLoadBrand()==false">
 					<div class="fl key brand">品牌</div>
 					<div class="value logos">
 						<ul class="logo-list">
