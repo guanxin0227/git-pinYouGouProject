@@ -5,6 +5,7 @@ import com.pinyougou.http.Result;
 import com.pinyougou.http.ShopStatus;
 import com.pinyougou.model.Goods;
 import com.pinyougou.model.Item;
+import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.search.service.ItemSearchService;
 import com.pinyougou.sellergoods.service.GoodsService;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,12 @@ public class GoodsController {
 
     @Reference
     private ItemSearchService itemSearchService;
+
+    @Reference
+    private ItemPageService itemPageService;
+
+    public GoodsController() {
+    }
 
     /***
      * 根据ID批量删除
@@ -148,6 +155,11 @@ public class GoodsController {
 
                     //批量导入索引库
                     itemSearchService.importList(itemList);
+
+                    //创建静态页面
+                    for (Long id : ids) {
+                        itemPageService.buildHtml(id);
+                    }
                 }
 
                 return new Result(true,"审核通过");

@@ -16,5 +16,5 @@ public interface ItemPageService {
     * @Exception
     *
     */
-    Boolean buildHtml(Long goodsId);
+    Boolean buildHtml(Long goodsId) throws Exception;
 }

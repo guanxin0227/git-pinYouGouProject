@@ -34,6 +34,12 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <artifactId>pinyougou-page-interface</artifactId>
+            <groupId>com.pinyougou</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- SpringMVC -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -125,6 +131,12 @@
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-search-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>pinyougou-page-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
