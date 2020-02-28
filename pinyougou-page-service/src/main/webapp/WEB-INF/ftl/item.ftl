@@ -6,15 +6,42 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<title>产品详情页</title>
-	 <link rel="icon" href="assets/img/favicon.ico">
+	 <link rel="icon" href="img/assets/img/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-item.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-zoom.css" />
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
+
+	<!--引入js-->
+	<script src="plugins/angularjs/angular.min.js"></script>
+
+	<!--分页插件引入-->
+	<script src="plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="plugins/angularjs/pagination.css">
+
+	<!--引入公共angularjs模块-->
+	<script src="js/base_pagination.js"></script>
+	<!--引入js 公共controller-->
+	<script src="js/controller/baseController.js"></script>
+	<!--引入js controller-->
+	<script src="js/controller/itemController.js"></script>
+	<!--引入js service-->
+<#--	<script src="/js/service/brandService.js"></script>-->
+
+
+	<#--
+		分别取出扩展属性，规格，图片，转成JSON
+	-->
+	<#-- 扩展属性 -->
+	<#assign customAttributeList = goodsDesc.customAttributeItems?eval/>
+	<#-- 图片 -->
+	<#assign imageList = goodsDesc.itemImages?eval/>
+	<#-- 规格 -->
+	<#assign specificationList = goodsDesc.specificationItems?eval/>
 </head>
 
-<body>
+<body ng-app="pinyougou" ng-controller="itemController">
 
 	<!--引入顶部文件-->
 	<#include "head.ftl">
@@ -41,9 +68,11 @@
 				<div class="fl preview-wrap">
 					<!--放大镜效果-->
 					<div class="zoom">
+<#--						<#if (imageList?? && imageList?size>0)>-->
 						<!--默认第一个预览-->
 						<div id="preview" class="spec-preview">
 							<span class="jqzoom"><img jqimg="img/_/b1.png" src="img/_/s1.png" /></span>
+<#--							<span class="jqzoom"><img jqimg="${imageList[0].url}" src="${imageList[0].url}" /></span>-->
 						</div>
 						<!--下方的缩略图-->
 						<div class="spec-scroll">
@@ -51,6 +80,9 @@
 							<!--左右按钮-->
 							<div class="items">
 								<ul>
+<#--									<#list imageList as image>-->
+<#--										<li><img src="${image.url}" bimg="${image.url}" onmousemove="preview(this)" /></li>-->
+<#--									</#list>-->
 									<li><img src="img/_/s1.png" bimg="img/_/b1.png" onmousemove="preview(this)" /></li>
 									<li><img src="img/_/s2.png" bimg="img/_/b2.png" onmousemove="preview(this)" /></li>
 									<li><img src="img/_/s3.png" bimg="img/_/b3.png" onmousemove="preview(this)" /></li>
@@ -64,13 +96,14 @@
 							</div>
 							<a class="next">&gt;</a>
 						</div>
+<#--						</#if>-->
 					</div>
 				</div>
 				<div class="fr itemInfo-wrap">
 					<div class="sku-name">
-						<h4>Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h4>
+						<h4>${goods.goodsName}</h4>
 					</div>
-					<div class="news"><span>推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</span></div>
+					<div class="news"><span>${goods.caption}</span></div>
 					<div class="summary">
 						<div class="summary-wrap">
 							<div class="fl title">
@@ -78,7 +111,7 @@
 							</div>
 							<div class="fl price">
 								<i>¥</i>
-								<em>5299.00</em>
+								<em>${goods.price}</em>
 								<span>降价通知</span>
 							</div>
 							<div class="fr remark">
@@ -114,62 +147,71 @@
 							</div>
 						</div>
 					</div>
+					{{specList}}
 					<div class="clearfix choose">
 						<div id="specification" class="summary-wrap clearfix">
+							<#list specificationList as specification>
 							<dl>
 								<dt>
 									<div class="fl title">
-									<i>选择颜色</i>
+									<i>${specification.attributeName}</i>
 								</div>
 								</dt>
-								<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">银色</a></dd>
-								<dd><a href="javascript:;">黑色</a></dd>
+								<#list specification.attributeValue as specValue>
+								<dd>
+									<a href="javascript:;" ng-click="selectSpec('${specification.attributeName}','${specValue}')" class="{{isSelectedSpec('${specification.attributeName}','${specValue}')}}">${specValue}
+										<span title="点击取消选择">&nbsp;
+										</span>
+									</a>
+								</dd>
+<#--								<dd><a href="javascript:;">银色</a></dd>-->
+<#--								<dd><a href="javascript:;">黑色</a></dd>-->
+								</#list>
 							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>内存容量</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">16G<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">64G</a></dd>
-								<dd><a href="javascript:;" class="locked">128G</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择版本</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">公开版<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动版</a></dd>							
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>购买方式</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">官方标配<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动优惠版</a></dd>	
-								<dd><a href="javascript:;"  class="locked">电信优惠版</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>套　　装</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">保护套装<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;"  class="locked">充电套装</a></dd>	
-								
-							</dl>
+							</#list>
+<#--							<dl>-->
+<#--								<dt>-->
+<#--									<div class="fl title">-->
+<#--									<i>内存容量</i>-->
+<#--								</div>-->
+<#--								</dt>-->
+<#--								<dd><a href="javascript:;" class="selected">16G<span title="点击取消选择">&nbsp;</span>-->
+<#--</a></dd>-->
+<#--								<dd><a href="javascript:;">64G</a></dd>-->
+<#--								<dd><a href="javascript:;" class="locked">128G</a></dd>-->
+<#--							</dl>-->
+<#--							<dl>-->
+<#--								<dt>-->
+<#--									<div class="fl title">-->
+<#--									<i>选择版本</i>-->
+<#--								</div>-->
+<#--								</dt>-->
+<#--								<dd><a href="javascript:;" class="selected">公开版<span title="点击取消选择">&nbsp;</span>-->
+<#--</a></dd>-->
+<#--								<dd><a href="javascript:;">移动版</a></dd>							-->
+<#--							</dl>-->
+<#--							<dl>-->
+<#--								<dt>-->
+<#--									<div class="fl title">-->
+<#--									<i>购买方式</i>-->
+<#--								</div>-->
+<#--								</dt>-->
+<#--								<dd><a href="javascript:;" class="selected">官方标配<span title="点击取消选择">&nbsp;</span>-->
+<#--</a></dd>-->
+<#--								<dd><a href="javascript:;">移动优惠版</a></dd>	-->
+<#--								<dd><a href="javascript:;"  class="locked">电信优惠版</a></dd>-->
+<#--							</dl>-->
+<#--							<dl>-->
+<#--								<dt>-->
+<#--									<div class="fl title">-->
+<#--									<i>套　　装</i>-->
+<#--								</div>-->
+<#--								</dt>-->
+<#--								<dd><a href="javascript:;" class="selected">保护套装<span title="点击取消选择">&nbsp;</span>-->
+<#--</a></dd>-->
+<#--								<dd><a href="javascript:;"  class="locked">充电套装</a></dd>	-->
+<#--								-->
+<#--							</dl>-->
 							
 							
 						</div>
@@ -408,32 +450,22 @@
 						<div class="tab-content tab-wraped">
 							<div id="one" class="tab-pane active">
 								<ul class="goods-intro unstyled">
-									<li>分辨率：1920*1080(FHD)</li>
-									<li>后置摄像头：1200万像素</li>
-									<li>前置摄像头：500万像素</li>
-									<li>核 数：其他</li>
-									<li>频 率：以官网信息为准</li>
-									<li>品牌： Apple</li>
-									<li>商品名称：APPLEiPhone 6s Plus</li>
-									<li>商品编号：1861098</li>
-									<li>商品毛重：0.51kg</li>
-									<li>商品产地：中国大陆</li>
-									<li>热点：指纹识别，Apple Pay，金属机身，拍照神器</li>
-									<li>系统：苹果（IOS）</li>
-									<li>像素：1000-1600万</li>
-									<li>机身内存：64GB</li>
+									<#list customAttributeList as customAttribute>
+										<li>${customAttribute.text}:${customAttribute.value}</li>
+									</#list>
 								</ul>
 								<div class="intro-detail">
-									<img src="img/_/intro01.png" />
-									<img src="img/_/intro02.png" />
-									<img src="img/_/intro03.png" />
+									${goodsDesc.introduction}
+<#--									<img src="img/_/intro01.png" />-->
+<#--									<img src="img/_/intro02.png" />-->
+<#--									<img src="img/_/intro03.png" />-->
 								</div>
 							</div>
 							<div id="two" class="tab-pane">
-								<p>规格与包装</p>
+								<p>${goodsDesc.packageList}</p>
 							</div>
 							<div id="three" class="tab-pane">
-								<p>售后保障</p>
+								<p>${goodsDesc.saleService}</p>
 							</div>
 							<div id="four" class="tab-pane">
 								<p>商品评价</p>
