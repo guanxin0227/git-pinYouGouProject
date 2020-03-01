@@ -38,6 +38,9 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <!--包扫描-->
+    <context:component-scan base-package="com.pinyougou.page.service" />
+
     <!-- 开启AOP注解 -->
     <aop:aspectj-autoproxy />
 
@@ -60,4 +63,5 @@
     <!--引入其他配置配置-->
     <import resource="spring-mybatis.xml" />
     <import resource="spring-dubbo.xml" />
+    <import resource="spring-mq.xml" />
 </beans>

@@ -3,15 +3,17 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.http.Result;
 import com.pinyougou.http.ShopStatus;
+import com.pinyougou.manager.service.MessageSender;
 import com.pinyougou.model.Goods;
 import com.pinyougou.model.Item;
+import com.pinyougou.mq.MessageInfo;
 import com.pinyougou.page.service.ItemPageService;
-import com.pinyougou.search.service.ItemSearchService;
 import com.pinyougou.sellergoods.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/goods")
 public class GoodsController {
@@ -19,17 +21,20 @@ public class GoodsController {
     @Reference
     private GoodsService goodsService;
 
-    @Reference
-    private ItemSearchService itemSearchService;
+//    @Reference
+//    private ItemSearchService itemSearchService;
 
     @Reference
     private ItemPageService itemPageService;
+
+    @Autowired
+    private MessageSender messageSender;
 
     public GoodsController() {
     }
 
     /***
-     * 根据ID批量删除
+     * 根据ID批量删除  引入消息队列
      * @param ids
      * @return
      */
@@ -42,7 +47,13 @@ public class GoodsController {
             if(dcount>0){
 
                 //如果删除成功，删除索引库
-                itemSearchService.deleteByGoodsIds(ids);
+                //itemSearchService.deleteByGoodsIds(ids);
+
+                //发送消息到消息队列
+                MessageInfo messageInfo = new MessageInfo(MessageInfo.METHOD_DELETE, ids);
+
+                //发送消息
+                messageSender.sendObjectMessage(messageInfo);
 
                 return new Result(true,"删除成功");
             }
@@ -135,7 +146,7 @@ public class GoodsController {
     }
 
     /***
-     * 审核操作 ，更新审核状态
+     * 审核操作 ，更新审核状态   引入activeMQ消息中间件
      * 获取JSON数据
      * @return
      */
@@ -154,12 +165,19 @@ public class GoodsController {
                     List<Item> itemList = goodsService.getByGoodsIds(ids,status);
 
                     //批量导入索引库
-                    itemSearchService.importList(itemList);
+                    //itemSearchService.importList(itemList);
 
                     //创建静态页面
-                    for (Long id : ids) {
-                        itemPageService.buildHtml(id);
-                    }
+//                    for (Long id : ids) {
+//                        itemPageService.buildHtml(id);
+//                    }
+
+                    //发送消息时的封装
+                    MessageInfo messageInfo = new MessageInfo(MessageInfo.METHOD_UPDATE,itemList);
+
+                    //消息发送
+                    messageSender.sendObjectMessage(messageInfo);
+
                 }
 
                 return new Result(true,"审核通过");

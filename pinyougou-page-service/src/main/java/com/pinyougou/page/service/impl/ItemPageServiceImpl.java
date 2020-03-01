@@ -92,6 +92,27 @@ public class ItemPageServiceImpl implements ItemPageService {
     }
 
     /**
+     * @Description 根据id删除生成的静态html页面
+     * @Author  guanx
+     * @Date   2020/2/29 20:16
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public void deleteHtml(Long id) {
+
+        //创建要删除的文件对象
+        File file = new File(ITEM_PATH + id + ITEM_SUFFIX);
+
+        //判断文件是否存在
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
+    /**
     * @Description 根据goodsId查询List<Item>
     * @Author  guanx
     * @Date   2020/2/28 16:15

@@ -39,4 +39,5 @@
     </bean>
 
     <import resource="spring-redis.xml"/>
+    <import resource="spring-mq.xml"/>
 </beans>

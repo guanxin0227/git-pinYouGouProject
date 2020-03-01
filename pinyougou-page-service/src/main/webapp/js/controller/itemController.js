@@ -6,6 +6,21 @@ app.controller('itemController',function ($scope) {
     //定义默认sku
     $scope.sku={};
 
+    $scope.num=1;
+
+    //加入购物车
+    $scope.addCart = function(){
+
+    }
+
+    //购买数量加减
+    $scope.addNum = function(num){
+        $scope.num = parseInt($scope.num) + parseInt(num);
+        if($scope.num<=0){
+            $scope.num=1;
+        }
+    }
+
     //加载默认规格
     $scope.loadDefaultSku=function(){
         $scope.specList =angular.fromJson(itemsList[0].spec);

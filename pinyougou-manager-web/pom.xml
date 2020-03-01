@@ -28,17 +28,17 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <artifactId>pinyougou-search-interface</artifactId>
-            <groupId>com.pinyougou</groupId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <artifactId>pinyougou-search-interface</artifactId>-->
+<!--            <groupId>com.pinyougou</groupId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <artifactId>pinyougou-page-interface</artifactId>
-            <groupId>com.pinyougou</groupId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <artifactId>pinyougou-page-interface</artifactId>-->
+<!--            <groupId>com.pinyougou</groupId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <!-- SpringMVC -->
         <dependency>
@@ -139,6 +139,12 @@
             <artifactId>pinyougou-page-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!--ActiveMQ-->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
         </dependency>
     </dependencies>
 

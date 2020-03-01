@@ -17,4 +17,15 @@ public interface ItemPageService {
     *
     */
     Boolean buildHtml(Long goodsId) throws Exception;
+
+    /**
+    * @Description 根据id删除生成的静态html页面
+    * @Author  guanx
+    * @Date   2020/2/29 20:16
+    * @Param
+    * @Return
+    * @Exception
+    *
+    */
+    void deleteHtml(Long id);
 }

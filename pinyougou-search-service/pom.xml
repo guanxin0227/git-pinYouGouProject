@@ -87,6 +87,17 @@
         </exclusion>
       </exclusions>
     </dependency>
+
+    <!--ActiveMQ-->
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-client</artifactId>
+    </dependency>
+    <!-- spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jms</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
