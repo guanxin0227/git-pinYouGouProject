@@ -62,6 +62,6 @@
 
     <!--引入其他配置配置-->
     <import resource="spring-mybatis.xml" />
-    <import resource="spring-dubbo.xml" />
+<!--    <import resource="spring-dubbo.xml" />-->
     <import resource="spring-mq.xml" />
 </beans>

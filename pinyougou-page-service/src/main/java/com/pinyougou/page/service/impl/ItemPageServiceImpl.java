@@ -1,6 +1,5 @@
 package com.pinyougou.page.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.mapper.GoodsDescMapper;
 import com.pinyougou.mapper.GoodsMapper;
@@ -13,6 +12,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import tk.mybatis.mapper.entity.Example;
 
