@@ -10,8 +10,8 @@
 app.service('userService',function ($http) {
 
     //注册功能
-    this.reg=function (entity) {
-       return $http.post('/user/add.shtml',entity);
+    this.reg=function (entity,code) {
+       return $http.post('/user/add.shtml?code=' + code,entity);
     }
 
     //创建验证码

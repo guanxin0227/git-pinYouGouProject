@@ -35,13 +35,34 @@ public class UserController {
     *
     */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public Result add(@RequestBody User user){
+    public Result add(@RequestBody User user,String code){
         try{
 
-            //增加
-            int mcount = userService.add(user);
+            //判断验证码是否有效
+            boolean bo = userService.checkCode(user.getPhone(),code);
+
+            if(!bo){
+                return new Result(false,"验证码无效");
+            }
+
+            //判断用户名是否存在
+            int mcount = userService.getUserByUserName(user.getUsername());
 
             if(mcount>0){
+                return new Result(false,"用户名已存在");
+            }
+
+            //判断手机号是否存在
+            int phoneCount = userService.getPhoneCount(user.getPhone());
+
+            if(phoneCount>0){
+                return new Result(false,"手机号已被注册");
+            }
+
+            //增加
+            int count = userService.add(user);
+
+            if(count>0){
                 return new Result(true,"增加成功");
             }
 

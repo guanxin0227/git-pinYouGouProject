@@ -11,7 +11,7 @@ app.controller('userController',function ($scope,userService) {
 
     //注册用户
     $scope.reg=function () {
-        userService.reg($scope.entity).success(function (response) {
+        userService.reg($scope.entity,$scope.code).success(function (response) {
             alert(response.message);
         })
     }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.util.DigestUtils;
 
 import javax.jms.*;
 import java.util.Date;
@@ -57,9 +58,24 @@ public class UserServiceImpl implements UserService {
     */
     @Override
     public int add(User user) {
+
+        //设置时间
         user.setCreated(new Date());
         user.setUpdated(new Date());
-        return userMapper.insertSelective(user);
+
+        //MD5加密
+        String pwd = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+        user.setPassword(pwd);
+
+
+        int count = userMapper.insertSelective(user);
+
+        if(count>0){
+            //添加成功，删除验证码
+            redisTemplate.boundHashOps("MobileInfo").delete(user.getPhone());
+        }
+
+        return count;
     }
 
     /**
@@ -88,6 +104,68 @@ public class UserServiceImpl implements UserService {
         //调用方法，将消息发送给activeMQ
         sendMessage(phone, json);
 
+    }
+
+    /**
+     * @Description 判断验证码是否有效
+     * @Author  guanx
+     * @Date   2020/3/2 14:03
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public boolean checkCode(String phone, String code) {
+
+        //redis中查询验证码
+        String mobileCode = (String) redisTemplate.boundHashOps("MobileInfo").get(phone);
+
+        if(null == mobileCode){
+            return false;
+        }
+
+        //匹配验证码是否一致
+        if(!mobileCode.equals(code)){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @Description 判断用户名是否存在
+     * @Author  guanx
+     * @Date   2020/3/2 14:08
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public int getUserByUserName(String username) {
+
+        User user = new User();
+        user.setUsername(username);
+
+        return userMapper.selectCount(user);
+    }
+
+    /**
+     * @Description 判断手机号是否存在
+     * @Author  guanx
+     * @Date   2020/3/2 14:12
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public int getPhoneCount(String phone) {
+
+        User user = new User();
+        user.setPhone(phone);
+
+        return userMapper.selectCount(user);
     }
 
     /**
