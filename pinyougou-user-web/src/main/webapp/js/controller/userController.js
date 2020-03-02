@@ -15,5 +15,12 @@ app.controller('userController',function ($scope,userService) {
             alert(response.message);
         })
     }
+
+    //发送验证码
+    $scope.createCode=function () {
+        userService.createCode($scope.entity.phone).success(function (response) {
+            alert(response.message);
+        })
+    }
     
 })

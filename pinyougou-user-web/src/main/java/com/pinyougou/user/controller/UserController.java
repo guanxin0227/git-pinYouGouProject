@@ -50,4 +50,29 @@ public class UserController {
         }
         return new Result(false,"增加失败");
     }
+
+    /**
+    * @Description 发送消息获取验证码
+    * @Author  guanx
+    * @Date   2020/3/2 11:23
+    * @Param
+    * @Return
+    * @Exception
+    *
+    */
+    @RequestMapping(value = "/create/code")
+    public Result createCode(String phone){
+        try {
+
+            //创建验证码
+            userService.createCode(phone);
+
+            return new Result(true,"发送验证码成功");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return new Result(false,"发送验证码失败");
+    }
 }

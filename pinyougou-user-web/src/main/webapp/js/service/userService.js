@@ -13,4 +13,9 @@ app.service('userService',function ($http) {
     this.reg=function (entity) {
        return $http.post('/user/add.shtml',entity);
     }
+
+    //创建验证码
+    this.createCode=function (phone) {
+        return $http.get('/user/create/code.shtml?phone=' + phone);
+    }
 })

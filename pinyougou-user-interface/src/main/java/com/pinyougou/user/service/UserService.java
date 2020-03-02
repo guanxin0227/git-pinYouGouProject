@@ -23,4 +23,15 @@ public interface UserService {
     *
     */
     int add(User user);
+
+    /**
+    * @Description 创建验证码
+    * @Author  guanx
+    * @Date   2020/3/2 11:29
+    * @Param
+    * @Return
+    * @Exception
+    *
+    */
+    void createCode(String phone);
 }
