@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.http.Result;
 import com.pinyougou.model.User;
 import com.pinyougou.user.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -95,5 +96,19 @@ public class UserController {
         }
 
         return new Result(false,"发送验证码失败");
+    }
+
+    /**
+    * @Description 获取当前用户名
+    * @Author  guanx
+    * @Date   2020/3/2 21:12
+    * @Param
+    * @Return
+    * @Exception
+    *
+    */
+    @RequestMapping(value = "/getUserName")
+    public String getUserName(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

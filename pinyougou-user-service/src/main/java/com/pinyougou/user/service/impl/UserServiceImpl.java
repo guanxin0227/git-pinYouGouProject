@@ -169,6 +169,23 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * @Description 获取用户名
+     * @Author  guanx
+     * @Date   2020/3/2 14:08
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    @Override
+    public User getUserInfoByUserName(String username) {
+        User user = new User();
+        user.setUsername(username);
+
+        return userMapper.selectOne(user);
+    }
+
+    /**
     * @Description 将消息发送给activeMQ
     * @Author  guanx
     * @Date   2020/3/2 13:37

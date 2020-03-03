@@ -67,4 +67,15 @@ public interface UserService {
     *
     */
     int getPhoneCount(String phone);
+
+    /**
+     * @Description 获取用户名
+     * @Author  guanx
+     * @Date   2020/3/2 14:08
+     * @Param
+     * @Return
+     * @Exception
+     *
+     */
+    User getUserInfoByUserName(String username);
 }
