@@ -32,7 +32,7 @@ public class CartController {
     private HttpServletRequest request;
 
     @Autowired
-    private HttpServletResponse respone;
+    private HttpServletResponse response;
 
     /**
     * @Description 从cookie中获取购物车
@@ -75,7 +75,7 @@ public class CartController {
                 cartService.addGoodsToRedis(username,redisCartList);
 
                 //清除cookie
-                CookieUtil.deleteCookie(request,respone,"CookieName");
+                CookieUtil.deleteCookie(request,response,"CookieName");
 
             }
 
@@ -96,6 +96,10 @@ public class CartController {
     @RequestMapping(value = "/add")
     public Result add(Long itemId,Integer num){
 
+        //解决跨域问题
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:18088");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
         //得到登陆人账号,判断当前是否有人登陆
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -112,7 +116,7 @@ public class CartController {
             String json = JSON.toJSONString(cartList);
 
             //将json数据存入到cookie中
-            CookieUtil.setCookie(request,respone,"CookieName",json,2600*24*30,"UTF-8");
+            CookieUtil.setCookie(request,response,"CookieName",json,2600*24*30,"UTF-8");
         }else{
 
             //非匿名，（已登录）

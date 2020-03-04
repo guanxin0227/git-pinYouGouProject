@@ -1,4 +1,4 @@
-app.controller('itemController',function ($scope) {
+app.controller('itemController',function ($scope,$http) {
 
     //定义变量，存储当前用户选择的规格
     $scope.specList={};
@@ -11,6 +11,17 @@ app.controller('itemController',function ($scope) {
     //加入购物车
     $scope.addCart = function(){
 
+        //发送请求，执行购物车增加
+        $http.get('http://localhost:18093/cart/add.shtml?itemId=' + $scope.sku.id + '&num=' + $scope.num,{'withCredentials':true}).success(function (response) {
+            if(response.success){
+
+                //跳转到购物车列表
+                location.href = 'http://localhost:18093/cart.html';
+
+            }else{
+                alert(response.message);
+            }
+        });
     }
 
     //购买数量加减
