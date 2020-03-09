@@ -8,6 +8,7 @@ import com.pinyougou.model.Cart;
 import com.pinyougou.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -93,12 +94,13 @@ public class CartController {
     * @Exception
     *
     */
+    @CrossOrigin(origins = "http://localhost:18088",allowCredentials = "true")
     @RequestMapping(value = "/add")
     public Result add(Long itemId,Integer num){
 
         //解决跨域问题
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:18088");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:18088");
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
 
         //得到登陆人账号,判断当前是否有人登陆
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

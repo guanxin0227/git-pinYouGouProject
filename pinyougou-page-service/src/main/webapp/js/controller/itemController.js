@@ -12,7 +12,7 @@ app.controller('itemController',function ($scope,$http) {
     $scope.addCart = function(){
 
         //发送请求，执行购物车增加
-        $http.get('http://localhost:18093/cart/add.shtml?itemId=' + $scope.sku.id + '&num=' + $scope.num,{'withCredentials':true}).success(function (response) {
+        $http.post('http://localhost:18093/cart/add.shtml?itemId=' + $scope.sku.id + '&num=' + $scope.num,{'withCredentials':true}).success(function (response) {
             if(response.success){
 
                 //跳转到购物车列表

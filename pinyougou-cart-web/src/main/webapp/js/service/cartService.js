@@ -18,4 +18,9 @@ app.service('cartService',function ($http) {
     this.addCart=function (itemId,num) {
         return $http.get('/cart/add.shtml?itemId=' + itemId + '&num=' + num);
     }
+
+    //查询用户地址
+    this.getAddressList=function () {
+        return $http.get('/address/user/list.shtml');
+    }
 })

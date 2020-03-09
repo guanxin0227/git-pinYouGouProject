@@ -56,4 +56,25 @@ app.controller('cartController',function ($scope,cartService) {
             }
         }
     }
+
+    //记录用户选择收货地址
+    $scope.selectAeeress=function (address) {
+        $scope.addressInfo=address;
+    }
+
+    //获取用户地址
+    $scope.getAddressList=function () {
+        cartService.getAddressList().success(function (response) {
+            $scope.addressList = response;
+
+            //查找默认地址
+            for(var i=0;i<$scope.addressList.length;i++){
+                if($scope.addressList[i].isDefault=='1'){
+                    $scope.addressInfo=angular.copy($scope.addressList[i]);
+                }
+            }
+        })
+
+    }
+
 })
