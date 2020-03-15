@@ -23,4 +23,9 @@ app.service('cartService',function ($http) {
     this.getAddressList=function () {
         return $http.get('/address/user/list.shtml');
     }
+
+    //添加保存订单信息
+    this.submitOrder=function (order) {
+        return $http.post('/order/add.shtml',order);
+    }
 })

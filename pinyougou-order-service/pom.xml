@@ -8,78 +8,58 @@
     <relativePath>../pinyougou-parent/pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <artifactId>pinyougou-cart-web</artifactId>
+  <artifactId>pinyougou-order-service</artifactId>
   <packaging>war</packaging>
 
   <dependencies>
+    <!--依赖Mapper-->
+    <dependency>
+      <artifactId>pinyougou-mapper</artifactId>
+      <groupId>com.pinyougou</groupId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
     <!--依赖interface-->
     <dependency>
-      <artifactId>pinyougou-cart-interface</artifactId>
-      <groupId>com.pinyougou</groupId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.pinyougou</groupId>
-      <artifactId>pinyougou-user-interface</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.pinyougou</groupId>
       <artifactId>pinyougou-order-interface</artifactId>
+      <groupId>com.pinyougou</groupId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
-    <!--spring-security-->
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-      <version>4.2.4.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
-      <version>4.2.4.RELEASE</version>
-    </dependency>
-
-    <!--集成包-->
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-cas</artifactId>
-      <version>4.2.4.RELEASE</version>
-    </dependency>
-
-    <!--cas核心包-->
-    <dependency>
-      <groupId>org.jasig.cas.client</groupId>
-      <artifactId>cas-client-core</artifactId>
-      <version>3.3.3</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>log4j-over-slf4j</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <!-- SpringMVC -->
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
+      <artifactId>spring-web</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+    </dependency>
 
     <!-- Apache工具组件 -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-    </dependency>
-
-    <!--FastJSON-->
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
     </dependency>
 
     <!--dubbo-->
@@ -115,15 +95,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-
-    <!--servlet-->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-      <scope>provided</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -133,11 +104,10 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <port>18093</port>
+          <port>18094</port>
           <path>/</path>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
 </project>

@@ -77,4 +77,31 @@ app.controller('cartController',function ($scope,cartService) {
 
     }
 
+    //支付功能  1表示在线支付，2表示货到付款
+    $scope.order={paymentType:1};
+
+    //切换支付方式
+    $scope.selectPayType=function (type) {
+        $scope.order.paymentType=type;
+    }
+
+    //添加保存订单信息
+    $scope.submitOrder=function () {
+
+        //收货地址
+        $scope.order.receiverAreaName=$scope.addressInfo.address;
+        //收货人手机号
+        $scope.order.receiverMobile=$scope.addressInfo.mobile;
+        //收货人名称
+        $scope.order.receiver=$scope.addressInfo.contact;
+
+        cartService.submitOrder($scope.order).success(function (response) {
+            if(response.success){
+                location.href='/paysuccess.html';
+            }else{
+                location.href='/payfail.html';
+            }
+        })
+    }
+
 })

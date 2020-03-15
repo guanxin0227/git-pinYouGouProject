@@ -611,4 +611,35 @@ public class Order implements Serializable {
     public void setSellerId(String sellerId) {
         this.sellerId = sellerId == null ? null : sellerId.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", payment=" + payment +
+                ", paymentType='" + paymentType + '\'' +
+                ", postFee='" + postFee + '\'' +
+                ", status='" + status + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", paymentTime=" + paymentTime +
+                ", consignTime=" + consignTime +
+                ", endTime=" + endTime +
+                ", closeTime=" + closeTime +
+                ", shippingName='" + shippingName + '\'' +
+                ", shippingCode='" + shippingCode + '\'' +
+                ", userId='" + userId + '\'' +
+                ", buyerMessage='" + buyerMessage + '\'' +
+                ", buyerNick='" + buyerNick + '\'' +
+                ", buyerRate='" + buyerRate + '\'' +
+                ", receiverAreaName='" + receiverAreaName + '\'' +
+                ", receiverMobile='" + receiverMobile + '\'' +
+                ", receiverZipCode='" + receiverZipCode + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", expire=" + expire +
+                ", invoiceType='" + invoiceType + '\'' +
+                ", sourceType='" + sourceType + '\'' +
+                ", sellerId='" + sellerId + '\'' +
+                '}';
+    }
 }
