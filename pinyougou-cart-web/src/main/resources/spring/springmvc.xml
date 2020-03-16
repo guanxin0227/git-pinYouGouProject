@@ -55,6 +55,14 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--snowflakeID计算器-->
+    <bean class="com.pinyougou.util.IdWorker" id="idWorker">
+        <!-- 进程ID -->
+        <constructor-arg index="0" value="0"></constructor-arg>
+        <!-- 数据中心ID -->
+        <constructor-arg index="1" value="0"></constructor-arg>
+    </bean>
+
     <!-- 包扫描 -->
     <context:component-scan base-package="com.pinyougou.cart.controller" />
 

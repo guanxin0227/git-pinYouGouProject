@@ -97,7 +97,7 @@ app.controller('cartController',function ($scope,cartService) {
 
         cartService.submitOrder($scope.order).success(function (response) {
             if(response.success){
-                location.href='/paysuccess.html';
+                location.href='/pay.html';
             }else{
                 location.href='/payfail.html';
             }

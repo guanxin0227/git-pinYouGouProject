@@ -32,6 +32,8 @@
         <module>../pinyougou-cart-web</module>
         <module>../pinyougou-order-interface</module>
         <module>../pinyougou-order-service</module>
+        <module>../pinyougou-pay-interface</module>
+        <module>../pinyougou-pay-service</module>
     </modules>
 
     <!--父工程pom-->
@@ -80,6 +82,8 @@
         <slf4j.version>1.6.6</slf4j.version>
         <log4j.version>1.2.12</log4j.version>
         <commons-pool2.version>2.0</commons-pool2.version>
+        <wxpay.version>0.0.3</wxpay.version>
+        <httpclient.version>4.5.3</httpclient.version>
     </properties>
 
     <dependencyManagement>
@@ -433,6 +437,18 @@
                 <version>${commons-pool2.version}</version>
             </dependency>
 
+            <!--微信支付-->
+            <dependency>
+                <groupId>com.github.wxpay</groupId>
+                <artifactId>wxpay-sdk</artifactId>
+                <version>${wxpay.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
