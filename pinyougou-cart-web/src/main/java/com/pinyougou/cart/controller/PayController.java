@@ -2,12 +2,17 @@ package com.pinyougou.cart.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.http.Result;
+import com.pinyougou.model.PayLog;
+import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pay.service.WeixinPayService;
 import com.pinyougou.util.IdWorker;
+import org.opensaml.xml.signature.P;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,6 +30,9 @@ public class PayController {
     @Reference
     private WeixinPayService weixinPayService;
 
+    @Reference
+    private OrderService orderService;
+
     /**
     * @Description 创建支付url
     * @Author  guanx
@@ -37,10 +45,14 @@ public class PayController {
     @RequestMapping(value = "/createNative")
     public Map createNative(){
 
-        String out_trade_no = idWorker.nextId() + "";
-        String total_fee = "1";
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return weixinPayService.createNative(out_trade_no,total_fee);
+        PayLog payLog = orderService.searchPayLogFromRedis(name);
+
+        if(null != payLog){
+            return weixinPayService.createNative(payLog.getOutTradeNo(),(payLog.getTotalFee()*100) + "");
+        }
+        return  new HashMap();
     }
     
     /**

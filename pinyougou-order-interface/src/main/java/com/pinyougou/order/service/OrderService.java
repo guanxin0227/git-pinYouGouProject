@@ -1,6 +1,7 @@
 package com.pinyougou.order.service;
 
 import com.pinyougou.model.Order;
+import com.pinyougou.model.PayLog;
 
 /**
  *  @author: guanx
@@ -19,4 +20,11 @@ public interface OrderService {
     *
     */
     int add(Order order);
+
+    /****
+     * 查询用户支付日志
+     * @param userid
+     * @return
+     */
+    PayLog searchPayLogFromRedis(String userid);
 }
