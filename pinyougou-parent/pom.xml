@@ -87,7 +87,7 @@
         <log4j.version>1.2.12</log4j.version>
         <commons-pool2.version>2.0</commons-pool2.version>
         <wxpay.version>0.0.3</wxpay.version>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
     </properties>
 
     <dependencyManagement>
